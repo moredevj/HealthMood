@@ -1,8 +1,6 @@
-// Importamos useState para manejar estados locales en el componente
 import { useState } from 'react';
-// Importamos datos dummy: lista de productos y categorías (datos estáticos para la demo)
+import { Link } from 'react-router-dom';
 import { products, categories } from '../utils/dummyData';
-// Hook personalizado para interactuar con el carrito (añadir, quitar, etc.)
 import { useCart } from '../../cart/hooks/useCart';
 
 // Exportamos el componente principal ProductList
@@ -148,77 +146,86 @@ export default function ProductList() {
 
                     {/* Botón de wishlist (guardar favorito) */}
                     <div className="position-absolute top-0 end-0 m-3 z-3">
-                      <button className="btn btn-light btn-sm rounded-circle shadow-sm">
+                      <button 
+                        className="btn btn-light btn-sm rounded-circle shadow-sm"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          // Aquí irá la lógica de wishlist
+                        }}
+                      >
                         <i className="far fa-heart text-muted"></i>
                       </button>
                     </div>
 
-                    {/* Imagen del producto */}
-                    <div className="position-relative overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        loading="lazy"
-                        className="card-img-top object-fit-cover"
-                        style={{ height: '250px' }}
-                      />
-                      {/* Overlay con calificaciones y reseñas */}
-                      <div className="position-absolute bottom-0 start-0 end-0 bg-gradient bg-dark bg-opacity-75 p-3">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <div className="text-white">
-                            {/* Estrellas (estáticas en este ejemplo) */}
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="fas fa-star text-warning"></i>
-                            <i className="far fa-star text-warning"></i>
-                            <small className="ms-1">(4.2)</small>
+                    <Link to={`/products/${product.id}`} className="text-decoration-none">
+                      {/* Imagen del producto */}
+                      <div className="position-relative overflow-hidden">
+                        <img 
+                          src={product.image} 
+                          alt={product.name}
+                          loading="lazy"
+                          className="card-img-top object-fit-cover"
+                          style={{ height: '250px' }}
+                        />
+                        {/* Overlay con calificaciones y reseñas */}
+                        <div className="position-absolute bottom-0 start-0 end-0 bg-gradient bg-dark bg-opacity-75 p-3">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div className="text-white">
+                              {/* Estrellas (estáticas en este ejemplo) */}
+                              <i className="fas fa-star text-warning"></i>
+                              <i className="fas fa-star text-warning"></i>
+                              <i className="fas fa-star text-warning"></i>
+                              <i className="fas fa-star text-warning"></i>
+                              <i className="far fa-star text-warning"></i>
+                              <small className="ms-1">(4.2)</small>
+                            </div>
+                            <small className="text-white-50">125 reseñas</small>
                           </div>
-                          <small className="text-white-50">125 reseñas</small>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Cuerpo de la tarjeta con información del producto */}
-                    <div className="card-body d-flex flex-column">
-                      <div className="mb-2">
-                        <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
-                          {categories.find(cat => cat.id === product.category)?.name || 'General'}
-                        </span>
-                      </div>
-
-                      <h5 className="card-title text-dark mb-2 fw-bold">{product.name}</h5>
-                      <p className="card-text text-muted small flex-grow-1">{product.description}</p>
-                      
-                      <div className="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                          <h4 className="text-primary fw-bold mb-0">
-                            ${product.price.toLocaleString('es-CL')}
-                          </h4>
-                          <small className="text-muted">
-                            <s>${(product.price * 1.2).toLocaleString('es-CL')}</s>
-                            <span className="badge bg-danger ms-1">-20%</span>
-                          </small>
-                        </div>
-                        <div className="text-end">
-                          <small className="text-success">
-                            <i className="fas fa-truck"></i> Envío gratis
-                          </small>
                         </div>
                       </div>
 
-                      {/* Botón para añadir al carrito */}
-                      <div className="mt-auto">
-                        <div className="d-grid gap-2">
-                          <button 
-                            className="btn btn-primary btn-lg rounded-pill fw-medium"
-                            onClick={() => addToCart(product)}
-                          >
-                            <i className="fas fa-shopping-cart me-2"></i>
-                            Agregar al carrito
-                          </button>
+                      {/* Cuerpo de la tarjeta con información del producto */}
+                      <div className="card-body d-flex flex-column">
+                        <div className="mb-2">
+                          <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
+                            {categories.find(cat => cat.id === product.category)?.name || 'General'}
+                          </span>
+                        </div>
+
+                        <h5 className="card-title text-dark mb-2 fw-bold">{product.name}</h5>
+                        <p className="card-text text-muted small flex-grow-1">{product.description}</p>
+                        
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <div>
+                            <h4 className="text-primary fw-bold mb-0">
+                              ${product.price.toLocaleString('es-CL')}
+                            </h4>
+                            <small className="text-muted">
+                              <s>${(product.price * 1.2).toLocaleString('es-CL')}</s>
+                              <span className="badge bg-danger ms-1">-20%</span>
+                            </small>
+                          </div>
+                          <div className="text-end">
+                            <small className="text-success">
+                              <i className="fas fa-truck"></i> Envío gratis
+                            </small>
+                          </div>
                         </div>
                       </div>
+                    </Link>
+                    
+                    {/* Botón para añadir al carrito (fuera del Link) */}
+                    <div className="card-footer bg-white border-0">
+                      <button 
+                        className="btn btn-primary btn-lg w-100 rounded-pill fw-medium"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(product);
+                        }}
+                      >
+                        <i className="fas fa-shopping-cart me-2"></i>
+                        Agregar al carrito
+                      </button>
                     </div>
                   </div>
                 </div>

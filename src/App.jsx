@@ -6,6 +6,7 @@ import HomePage from './modules/home/pages/HomePage';
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
 import ProductsPage from './modules/products/pages/ProductsPage';
+import Product from './modules/products/pages/Product';
 import CartPage from './modules/cart/pages/CartPage';
 import { CartProvider } from './modules/cart/components/CartProvider.jsx';
 
@@ -19,6 +20,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:id" element={<Product />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
