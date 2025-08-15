@@ -1,0 +1,126 @@
+/* Estilos /* Estilos para los enlaces del m/* Estilos para los botones de autenticación */
+.btn-outline-primary {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  color: white;
+  border-color: #8061c5;
+ background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  color: white !important;
+ background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);
+}
+
+.btn-light {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+ background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);  
+ border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+background-color: white;
+}incipal */
+.navbar-nav .nav-link {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  font-weight: 500;
+  color: white; /* Color del texto normal */
+  transition: all 0.3s ease;
+}
+
+/* Color cuando el enlace está activo */
+.navbar-nav .nav-link.active {
+   background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%); /* Color de fondo cuando está activo */
+  color: #8061c5;
+}
+
+/* Color al pasar el mouse */
+.navbar-nav .nav-link:hover {
+  background-color: #8061c5;
+  color: white;
+}les del navbar */
+.navbar {
+  font-family: 'Lato', sans-serif; /* Puedes cambiar a la fuente que prefieras */
+}
+
+/* Estilos para el logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilos para el botón de búsqueda */
+.btn-outline-secondary {
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);
+}
+
+/* Estilos para el carrito */
+.cart-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Estilo para hacer el icono del carrito más grande */
+.cart-wrapper svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.cart-icon {
+  transform: scale(1.8);
+}
+
+.cart-wrapper:hover {
+  background-color: #8061c5; ;
+}
+
+/* Estilos para los enlaces del menú principal */
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2rem; /* Espacio entre elementos del menú */
+}
+
+.navbar-nav .nav-link {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  font-weight: 500;
+  white-space: nowrap; /* Evita que el texto se rompa en múltiples líneas */
+}
+
+/* Estilos para el menú móvil */
+.offcanvas-body .nav-link {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Estilos para los botones de autenticación */
+.btn-outline-primary,
+.btn-light {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}
+
+/* Estilos para el menú desplegable del usuario */
+.dropdown-menu {
+  font-family: 'Lato', sans-serif;
+}
+
+/* Estilos para la barra promocional */
+.bg-gradient {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}

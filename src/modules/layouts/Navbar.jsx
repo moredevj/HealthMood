@@ -3,22 +3,20 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/hook/useAuth';
 import CartIcon from '../cart/components/CartIcon';
 import {
-  FaHome,
-  FaBoxOpen,
+  
   FaSignInAlt,
-  FaUserPlus,
-  FaUser,
   FaSignOutAlt,
+  FaShoppingCart,
   FaShoppingBag,
   FaHeart,
   FaSearch,
   FaBell,
   FaCog,
   FaChevronDown,
-  FaStar,
-  FaGift,
+  
 } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import './Navbar.css';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -57,9 +55,7 @@ export default function Navbar() {
       }}>
         <div className="container">
           <div className="d-flex justify-content-center align-items-center  text-white">
-            <FaGift className="me-2 animate__animated animate__pulse animate__infinite" />
             <small className="fw-medium">¡Envío gratis en compras superiores a $50.000!</small>
-            <FaStar className="ms-2 text-warning animate__animated animate__pulse animate__infinite" />
           </div>
         </div>
       </div>
@@ -70,16 +66,12 @@ export default function Navbar() {
       }`}>
         <div className="container">
           {/* Enhanced Brand */}
-          <Link className="navbar-brand d-flex align-items-center gap-2 animate-hover" to="/">
-            <div className="brand-icon-wrapper">
-              <span className="badge bg-gradient-primary rounded-circle p-3 shadow-sm brand-icon">
-                <FaShoppingBag className="fs-6 bg-primary" />
-              </span>
-            </div>
-            <div className="brand-text">
-              <span className="fw-bold fs-4 text-primary">Tiendita</span>
-              <small className="d-block text-muted lh-1">Premium Store</small>
-            </div>
+          <Link className="navbar-brand" to="/">
+            <img 
+              src="/src/assets/logo.png" 
+              alt="Tiendita Logo" 
+              style={{ height: '60px' }}
+            />
           </Link>
 
           {/* Mobile toggler */}
@@ -108,51 +100,73 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  <FaHome className="me-2" />
-                  Inicio
+                  INICIO
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink
-                  to="/products"
+                  to="/about"
                   className={({ isActive }) =>
                     `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
                       isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
                     }`
                   }
                 >
-                  <FaBoxOpen className="me-2" />
-                  Productos
+                  {/* Puedes cambiar el icono si lo deseas */}
+                  QUIENES SOMOS
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink
-                  to="/categories"
+                  to="/catalog"
                   className={({ isActive }) =>
                     `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
                       isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
                     }`
                   }
                 >
-                  <FaStar className="me-2" />
-                  Categorías
+                  CATÁLOGO
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/blog"
+                  className={({ isActive }) =>
+                    `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
+                      isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
+                    }`
+                  }
+                >
+                  BLOG
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
+                      isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
+                    }`
+                  }
+                >
+                  CONTACTO
                 </NavLink>
               </li>
             </ul>
 
-   
+            {/* Search icon */}
+            <form onSubmit={handleSearch} className="me-2">
+              <button
+                type="submit"
+                className="btn btn-outline-secondary rounded-circle p-2"
+                title="Buscar"
+              >
+                <FaSearch />
+              </button>
+            </form>
 
             {/* Right side actions */}
             <ul className="navbar-nav align-items-center">
- 
-
-              {/* Cart */}
-              <li className="nav-item me-3">
-                <div className="cart-wrapper">
-                  <CartIcon />
-                </div>
-              </li>
-
               {/* Authentication */}
               {!isAuthenticated ? (
                 <>
@@ -165,28 +179,9 @@ export default function Navbar() {
                       Iniciar Sesión
                     </NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink
-                      to="/register"
-                      className="btn btn-primary rounded-pill px-4 py-2 shadow-sm"
-                    >
-                      <FaUserPlus className="me-2" />
-                      Registro
-                    </NavLink>
-                  </li>
                 </>
               ) : (
                 <>
-                  {/* Notifications */}
-                  <li className="nav-item me-3">
-                    <button className="btn btn-outline-light rounded-circle p-2 position-relative icon-btn">
-                      <FaBell className="text-muted" />
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning badge-sm">
-                        2
-                      </span>
-                    </button>
-                  </li>
-
                   {/* User dropdown */}
                   <li className="nav-item dropdown">
                     <button
@@ -209,20 +204,17 @@ export default function Navbar() {
                     <ul className="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2">
                       <li>
                         <h6 className="dropdown-header d-flex align-items-center">
-                          <FaUser className="me-2 text-primary" />
                           Mi Cuenta
                         </h6>
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
                         <Link className="dropdown-item rounded-2 p-2" to="/profile">
-                          <FaUser className="me-2 text-muted" />
                           Mi Perfil
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item rounded-2 p-2" to="/orders">
-                          <FaBoxOpen className="me-2 text-muted" />
                           Mis Pedidos
                         </Link>
                       </li>
@@ -246,9 +238,15 @@ export default function Navbar() {
                   </li>
                 </>
               )}
+              {/* Cart */}
+              <li className="nav-item ms-2">
+                <div className="cart-wrapper">
+                  <CartIcon style={{ fontSize: '3 rem' }} />
+                </div>
+              </li>
             </ul>
           </div>
-
+          
           {/* Enhanced Mobile Offcanvas - solo visible en móvil */}
           <div
             id="offcanvasNav"
@@ -263,13 +261,12 @@ export default function Navbar() {
             <div className="offcanvas-header border-bottom border-light border-opacity-25">
               <div className="d-flex align-items-center gap-3">
                 <div className="user-avatar bg-white bg-opacity-25 rounded-circle p-2">
-                  <FaUser className="text-white" />
                 </div>
                 <div className="text-white">
                   <h6 className="offcanvas-title mb-0" id="offcanvasNavLabel">
                     {isAuthenticated ? `Hola, ${user?.username}` : 'Menú'}
                   </h6>
-                  <small className="opacity-75">Bienvenido a Tiendita</small>
+                  <small className="opacity-75">Bienvenido a HealthMood</small>
                 </div>
               </div>
               <button
@@ -281,25 +278,6 @@ export default function Navbar() {
             </div>
 
             <div className="offcanvas-body p-0">
-              {/* Search in mobile */}
-              <div className="p-3 border-bottom border-light border-opacity-25">
-                <form onSubmit={handleSearch} className="position-relative">
-                  <input
-                    type="text"
-                    className="form-control rounded-pill bg-white bg-opacity-25 border-0 text-white placeholder-white-75"
-                    placeholder="Buscar productos..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2 text-white"
-                  >
-                    <FaSearch />
-                  </button>
-                </form>
-              </div>
-
               {/* Navigation links */}
               <ul className="navbar-nav p-3">
                 <li className="nav-item mb-2">
@@ -313,48 +291,63 @@ export default function Navbar() {
                       }`
                     }
                   >
-                    <FaHome className="me-3" />
-                    Inicio
+                    INICIO
                   </NavLink>
                 </li>
                 <li className="nav-item mb-2">
                   <NavLink
-                    to="/products"
-                    data-bs-dismiss="offcanvas"
-                    className={({ isActive }) =>
-                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
-                        isActive ? 'active bg-white bg-opacity-25' : ''
-                      }`
-                    }
-                  >
-                    <FaBoxOpen className="me-3" />
-                    Productos
-                  </NavLink>
-                </li>
-                <li className="nav-item mb-2">
-                  <NavLink
-                    to="/categories"
-                    data-bs-dismiss="offcanvas"
-                    className={({ isActive }) =>
-                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
-                        isActive ? 'active bg-white bg-opacity-25' : ''
-                      }`
-                    }
-                  >
-                    <FaStar className="me-3" />
-                    Categorías
-                  </NavLink>
-                </li>
-                <li className="nav-item mb-2">
-                  <NavLink
-                    to="/wishlist"
+                    to="/about"
                     data-bs-dismiss="offcanvas"
                     className="nav-link text-white p-3 rounded-3 mobile-nav-link"
                   >
-                    <FaHeart className="me-3" />
-                    Lista de Deseos
-                    <span className="badge bg-danger ms-auto">3</span>
+                    QUIENES SOMOS
                   </NavLink>
+                </li>
+                <li className="nav-item mb-2">
+                  <NavLink
+                    to="/catalog"
+                    data-bs-dismiss="offcanvas"
+                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                  >
+                    CATÁLOGO
+                  </NavLink>
+                </li>
+                <li className="nav-item mb-2">
+                  <NavLink
+                    to="/blog"
+                    data-bs-dismiss="offcanvas"
+                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                  >
+                    BLOG
+                  </NavLink>
+                </li>
+                <li className="nav-item mb-2">
+                  <NavLink
+                    to="/contact"
+                    data-bs-dismiss="offcanvas"
+                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                  >
+                    CONTACTO
+                  </NavLink>
+                </li>
+                {/* Search icon in mobile */}
+                <li className="nav-item mb-2">
+                  <form onSubmit={handleSearch} className="d-flex">
+                    <input
+                      type="text"
+                      className="form-control rounded-pill bg-white bg-opacity-25 border-0 text-white placeholder-white-75 me-2"
+                      placeholder="Buscar..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button
+                      type="submit"
+                      className="btn btn-outline-light rounded-circle"
+                      title="Buscar"
+                    >
+                      <FaSearch />
+                    </button>
+                  </form>
                 </li>
               </ul>
 
@@ -363,7 +356,6 @@ export default function Navbar() {
               {/* Cart in mobile */}
               <div className="p-3">
                 <div className="d-flex align-items-center justify-content-between text-white mb-3">
-                  <span className="fw-medium">Mi Carrito</span>
                   <CartIcon />
                 </div>
               </div>
@@ -385,7 +377,6 @@ export default function Navbar() {
                       data-bs-dismiss="offcanvas"
                       className="btn btn-warning rounded-pill py-3"
                     >
-                      <FaUserPlus className="me-2" />
                       Crear Cuenta
                     </NavLink>
                   </div>
@@ -396,7 +387,6 @@ export default function Navbar() {
                       data-bs-dismiss="offcanvas"
                       className="btn btn-light rounded-pill py-3"
                     >
-                      <FaUser className="me-2" />
                       Mi Perfil
                     </Link>
                     <Link
@@ -404,7 +394,6 @@ export default function Navbar() {
                       data-bs-dismiss="offcanvas"
                       className="btn btn-outline-light rounded-pill py-3"
                     >
-                      <FaBoxOpen className="me-2" />
                       Mis Pedidos
                     </Link>
                     <button
