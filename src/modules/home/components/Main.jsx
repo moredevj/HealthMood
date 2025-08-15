@@ -166,115 +166,58 @@ export default function Main() {
         {/* Products Section */}
         <section className="mb-5">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <h2 className="h3 fw-bold text-dark mb-0">
-              <i className="fas fa-fire text-danger me-2"></i>
-              Productos Destacados
+            <h2 className="h3 fw-bold text-dark text-center mb-3">
+              Productos Populares
             </h2>
-            <div className="d-flex gap-2">
-              <button className="btn btn-outline-primary btn-sm rounded-pill">
-                <i className="fas fa-th me-1"></i>
-                Grid
-              </button>
-              <button className="btn btn-outline-secondary btn-sm rounded-pill">
-                <i className="fas fa-list me-1"></i>
-                Lista
-              </button>
-            </div>
+            <p className="text-center text-muted mb-4">
+              Selección especial de productos premium para el bienestar de tu mascota.
+            </p>
           </div>
 
           {/* Products Grid */}
           <div className="row g-4">
             {filteredAndSortedProducts.map(product => (
               <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={product.id}>
-                <div className="card h-100 shadow-sm border-0 product-card position-relative overflow-hidden">
-                  
-                  {/* Product Badge */}
-                  <div className="position-absolute top-0 start-0 p-2" style={{ zIndex: 2 }}>
-                    <span className="badge bg-success rounded-pill">
-                      <i className="fas fa-star me-1"></i>
-                      Destacado
-                    </span>
-                  </div>
-
-                  {/* Favorite Button */}
-                  <button 
-                    className="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle p-2 border-0 shadow-sm"
-                    style={{ zIndex: 2, width: '40px', height: '40px' }}
-                    onClick={() => toggleFavorite(product.id)}
-                  >
-                    <i className={`fas fa-heart ${favorites.has(product.id) ? 'text-danger' : 'text-muted'}`}></i>
-                  </button>
-
+                <div className="card h-100 border-0 rounded-4 overflow-hidden bg-white">
                   {/* Product Image */}
-                  <div className="position-relative overflow-hidden">
+                  <div className="position-relative">
                     <img 
                       src={product.img} 
                       className="card-img-top" 
                       alt={product.name}
                       style={{ 
-                        height: '250px', 
-                        objectFit: 'cover',
-                        transition: 'transform 0.3s ease'
+                        height: '200px', 
+                        objectFit: 'cover'
                       }}
-                      onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-                      onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                     />
-                    
-                    {/* Quick Actions Overlay */}
-                    <div className="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient bg-dark bg-opacity-75 opacity-0 product-overlay">
-                      <div className="d-flex gap-2 justify-content-center">
-                        <button className="btn btn-sm btn-light rounded-pill flex-fill">
-                          <i className="fas fa-eye me-1"></i>
-                          Ver
-                        </button>
-                        <button className="btn btn-sm btn-outline-light rounded-pill">
-                          <i className="fas fa-share-alt"></i>
-                        </button>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Product Info */}
-                  <div className="card-body d-flex flex-column p-4">
-                    <div className="mb-2">
-                      <span className="badge bg-light text-dark rounded-pill small">
-                        {product.category || 'General'}
-                      </span>
-                    </div>
-                    
-                    <h5 className="card-title mb-2 fw-bold text-dark">{product.name}</h5>
+                  <div className="card-body p-3">
+                    <h5 className="card-title fw-bold mb-1">{product.name}</h5>
+                    <p className="text-muted small mb-2">{product.description}</p>
                     
                     {/* Rating */}
                     <div className="d-flex align-items-center mb-2">
-                      <div className="text-warning me-2">
+                      <div className="text-warning me-1">
                         {[...Array(5)].map((_, i) => (
-                          <i key={i} className={`fas fa-star ${i < 4 ? '' : 'text-muted'}`} style={{ fontSize: '12px' }}></i>
+                          <i key={i} className={`fas fa-star ${i < Math.floor(product.rating) ? '' : 'text-muted'}`} style={{ fontSize: '12px' }}></i>
                         ))}
                       </div>
-                      <small className="text-muted">(4.0) 127 reseñas</small>
+                      <small className="text-muted">{product.rating}</small>
                     </div>
 
-                    {/* Price */}
-                    <div className="d-flex align-items-center justify-content-between mb-3">
-                      <div>
-                        <span className="h5 text-primary fw-bold mb-0">
-                          ${product.price.toLocaleString('es-CL')}
-                        </span>
-                        <small className="text-decoration-line-through text-muted ms-2">
-                          ${Math.round(product.price * 1.2).toLocaleString('es-CL')}
-                        </small>
-                      </div>
-                      <span className="badge bg-danger rounded-pill">-20%</span>
-                    </div>
-
-                    {/* Add to Cart Button */}
-                    <div className="mt-auto">
+                    {/* Price and Add to Cart */}
+                    <div className="d-flex align-items-center justify-content-between">
+                      <span className="h5 text-primary mb-0">
+                        ${product.price.toLocaleString('es-CL')}
+                      </span>
                       <button 
-                        className="btn btn-primary w-100 rounded-3 fw-medium py-2"
+                        className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
                         onClick={() => addToCart(product)}
+                        style={{ width: '40px', height: '40px' }}
                       >
-                        <i className="fas fa-shopping-cart me-2"></i>
-                        Agregar al carrito
+                        <i className="fas fa-cart-plus"></i>
                       </button>
                     </div>
                   </div>
