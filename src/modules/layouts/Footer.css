@@ -1,0 +1,89 @@
+/* Estilos generales del footer */
+footer {
+  background: #8061c5 ;
+  font-family: 'Lato', sans-serif;
+  color: white;
+}
+
+/* Estilos para el logo */
+.footer-logo img {
+  height: 100px;
+  filter: brightness(0) invert(1);
+}
+
+/* Estilos para los iconos de redes sociales */
+.social-icons-wrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.social-icon {
+  font-size: 28px;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  opacity: 0.8;
+}
+
+/* Estilos para los enlaces */
+.link-light {
+  color: white !important;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link-light:hover {
+  opacity: 0.8;
+  padding-left: 5px;
+}
+
+/* Estilos para las secciones */
+.footer-section h5 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+/* Estilos para la lista de enlaces */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para la información de contacto */
+.contact-info {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para el copyright */
+.footer-copyright {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+/* Estilos para el separador */
+.footer-divider {
+  border-color: rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .footer-logo img {
+    height: 35px;
+  }
+  
+  .social-icon {
+    font-size: 24px;
+  }
+}
