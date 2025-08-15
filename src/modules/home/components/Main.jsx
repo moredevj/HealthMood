@@ -64,6 +64,86 @@ export default function Main() {
 
   return (
     <div className="bg-light min-vh-100">
+      {/* Products Section */}
+      <section className="container mb-5 pt-5">
+        <div className="text-center mb-5">
+          <h2 className="h3 fw-bold text-dark mb-2">
+            Productos Populares
+          </h2>
+          <p className="text-muted mb-0">
+            Selección especial de productos premium para el bienestar de tu mascota.
+          </p>
+        </div>
+
+        {/* Products Grid */}
+        <div className="row justify-content-center g-5">
+          {filteredAndSortedProducts.slice(0, 3).map((product, index) => (
+            <div className="col-12 col-sm-6 col-lg-3" key={product.id} style={{ marginLeft: index === 0 ? 'auto' : '2rem', marginRight: index === 2 ? 'auto' : '2rem' }}>
+              <div className="card h-100 border-0 rounded-4 overflow-hidden bg-white shadow-sm" style={{ position: 'relative' }}>
+                {/* Product Image */}
+                <div className="position-relative">
+                  <img 
+                    src={product.img} 
+                    className="card-img-top" 
+                    alt={product.name}
+                    style={{ 
+                      height: '200px', 
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+
+                {/* Product Info */}
+                <div className="card-body p-3 d-flex flex-column" style={{ minHeight: '220px' }}>
+                  <div>
+                    <h5 className="card-title fw-bold mb-1">{product.name}</h5>
+                    <p className="text-muted small mb-2">{product.description}</p>
+                    
+                    {/* Rating */}
+                    <div className="d-flex align-items-center mb-3">
+                      <div className="d-flex align-items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <i key={i} 
+                             className="fa-solid fa-star me-1 text-warning"
+                             style={{ fontSize: '16px' }}
+                          ></i>
+                        ))}
+                        <small className="ms-2 fw-medium">4.8</small>
+                      </div>
+                    </div>
+
+                    {/* Price */}
+                    <div className="mb-3">
+                      <span className="h5 text-primary mb-0">
+                        ${product.price.toLocaleString('es-CL')}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Add to Cart Button - Positioned at bottom */}
+                  <div className="mt-auto text-end">
+                    <button 
+                      className="btn px-3 py-2 d-inline-flex align-items-center gap-2 fw-medium"
+                      onClick={() => addToCart(product)}
+                      style={{ 
+                        background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      <i className="fa-solid fa-cart-plus"></i>
+                      <span>Agregar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="bg-primary text-white py-5 mb-5 position-relative overflow-hidden">
         {/* Background decoration */}
@@ -163,69 +243,7 @@ export default function Main() {
           </div>
         </div>
 
-        {/* Products Section */}
-        <section className="mb-5">
-          <div className="d-flex align-items-center justify-content-between mb-4">
-            <h2 className="h3 fw-bold text-dark text-center mb-3">
-              Productos Populares
-            </h2>
-            <p className="text-center text-muted mb-4">
-              Selección especial de productos premium para el bienestar de tu mascota.
-            </p>
-          </div>
-
-          {/* Products Grid */}
-          <div className="row g-4">
-            {filteredAndSortedProducts.map(product => (
-              <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={product.id}>
-                <div className="card h-100 border-0 rounded-4 overflow-hidden bg-white">
-                  {/* Product Image */}
-                  <div className="position-relative">
-                    <img 
-                      src={product.img} 
-                      className="card-img-top" 
-                      alt={product.name}
-                      style={{ 
-                        height: '200px', 
-                        objectFit: 'cover'
-                      }}
-                    />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="card-body p-3">
-                    <h5 className="card-title fw-bold mb-1">{product.name}</h5>
-                    <p className="text-muted small mb-2">{product.description}</p>
-                    
-                    {/* Rating */}
-                    <div className="d-flex align-items-center mb-2">
-                      <div className="text-warning me-1">
-                        {[...Array(5)].map((_, i) => (
-                          <i key={i} className={`fas fa-star ${i < Math.floor(product.rating) ? '' : 'text-muted'}`} style={{ fontSize: '12px' }}></i>
-                        ))}
-                      </div>
-                      <small className="text-muted">{product.rating}</small>
-                    </div>
-
-                    {/* Price and Add to Cart */}
-                    <div className="d-flex align-items-center justify-content-between">
-                      <span className="h5 text-primary mb-0">
-                        ${product.price.toLocaleString('es-CL')}
-                      </span>
-                      <button 
-                        className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
-                        onClick={() => addToCart(product)}
-                        style={{ width: '40px', height: '40px' }}
-                      >
-                        <i className="fas fa-cart-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Filters Section */}
 
         {/* Newsletter Section */}
         <section className="py-5">
