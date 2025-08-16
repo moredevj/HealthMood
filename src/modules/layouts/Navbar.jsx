@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/hook/useAuth';
 import CartIcon from '../cart/components/CartIcon';
 import {
-  
+  FaUser,
   FaSignInAlt,
   FaSignOutAlt,
   FaShoppingCart,
@@ -118,7 +118,7 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <NavLink
-                  to="/catalog"
+                  to="/products"
                   className={({ isActive }) =>
                     `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
                       isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
