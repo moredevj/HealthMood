@@ -281,7 +281,7 @@ export default function Main() {
         </section>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .product-card:hover .product-overlay {
           opacity: 1 !important;
           transition: opacity 0.3s ease;
