@@ -136,7 +136,11 @@ export default function ProductList() {
             <div className="row g-4">
               {paginated.map(product => (
                 <div key={product.id} className="col-lg-4 col-md-6">
-                  <div className="card h-100 border-0 shadow-sm position-relative overflow-hidden">
+                  <div className="card h-100 border-0 shadow-sm position-relative overflow-hidden"
+                       style={{ transition: 'transform 0.3s ease-in-out' }}
+                       onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                       onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                  >
                     {/* Badge indicando estado (ej. Nuevo) */}
                     <div className="position-absolute top-0 start-0 m-3 z-3">
                       <span className="badge bg-success bg-gradient rounded-pill px-3 py-2">
@@ -218,6 +222,9 @@ export default function ProductList() {
                     <div className="card-footer bg-white border-0">
                       <button 
                         className="btn btn-primary btn-lg w-100 rounded-pill fw-medium"
+                        style={{ transition: 'transform 0.2s ease-in-out' }}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                         onClick={(e) => {
                           e.preventDefault();
                           addToCart(product);

@@ -1,0 +1,83 @@
+:root {
+  --primary-color: #8366b3;
+  --primary-light: #a991d4;
+  --bg-light: #f8f5ff;
+  --white: #ffffff;
+}
+
+.about-container {
+  background-color: var(--bg-light);
+  padding: 3rem 0;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.mission-card,
+.vision-card {
+  min-height: 300px;
+}
+
+.mission-card img,
+.vision-card img {
+  height: 120px !important;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.values-section {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.value-card {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+}
+
+.dog-image {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 40%;
+}
+.value-card .card-body {
+  text-align: center;
+}
+
+.value-card h3,
+.value-card p {
+  width: 100%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-header h1,
+.about-header p {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+
