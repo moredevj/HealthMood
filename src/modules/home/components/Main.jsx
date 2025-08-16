@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { MOCK } from '../utils/dummyData.js';
+import CategoriaGrid from './CategoriaGrid'; // Importa el componente
 
 export default function Main() {
   const [products, setProducts] = useState(MOCK);
@@ -75,12 +76,30 @@ export default function Main() {
           </p>
         </div>
 
+        {/* Category Filter */}
+        <div className="row mb-4">
+          <div className="col-md-4">
+            <label className="form-label fw-medium text-muted small">CATEGORÍA</label>
+            <select 
+              className="form-select form-select-lg border-0 bg-light rounded-3"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>
+                  {cat === 'all' ? 'Todas las categorías' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         {/* Products Grid */}
         <div className="row justify-content-center g-5">
           {filteredAndSortedProducts.slice(0, 3).map((product, index) => (
             <div className="col-12 col-sm-6 col-lg-3" key={product.id} style={{ marginLeft: index === 0 ? 'auto' : '2rem', marginRight: index === 2 ? 'auto' : '2rem' }}>
               <div 
-                className="card h-100 border-0 rounded-4 overflow-hidden bg-white shadow-sm" 
+                className="card h-100 border-0 rounded-4 overflow-hidden bg-white shadow-sm product-card" 
                 style={{ 
                   position: 'relative',
                   transition: 'transform 0.3s ease-in-out'
@@ -143,7 +162,7 @@ export default function Main() {
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.transform = 'scale(0.98)';
-                        e.currentTarget.style.background = '#6B2FD1'; // Color morado sólido
+                        e.currentTarget.style.background = '#6B2FD1';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'scale(1)';
@@ -161,153 +180,71 @@ export default function Main() {
         </div>
       </section>
 
-      {/* Hero Section */}
-      <section className="bg-primary text-white py-5 mb-5 position-relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="position-absolute top-0 end-0 opacity-25">
-          <i className="fas fa-shopping-bag" style={{ fontSize: '200px', transform: 'rotate(15deg) translate(50px, -50px)' }}></i>
-        </div>
-        
-        <div className="container position-relative">
-          <div className="row align-items-center">
-            <div className="col-lg-8">
-              <h1 className="display-4 fw-bold mb-3">
-                Descubre productos increíbles
-                <span className="text-warning">.</span>
-              </h1>
-              <p className="lead mb-4 opacity-75">
-                Explora nuestra selección curada de productos de alta calidad con los mejores precios del mercado.
-              </p>
-              <div className="d-flex gap-3 flex-wrap">
-                <div className="d-flex align-items-center text-white-50">
-                  <i className="fas fa-shipping-fast me-2 text-warning"></i>
-                  <small>Envío gratis</small>
+      {/* Categories Grid Section - NUEVA SECCIÓN */}
+      <CategoriaGrid />
+
+       {/* Newsletter Section */}
+      <section className="container py-5">
+        <div className="card text-white border-0 shadow-lg" style={{
+          background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)'
+        }}>
+          <div className="card-body p-5 text-center">
+            <div className="row justify-content-center">
+              <div className="col-lg-8">
+                <h3 className="display-6 fw-bold mb-3">¡No te pierdas nuestras ofertas!</h3>
+                <p className="lead mb-4 opacity-75">
+                  Suscríbete a nuestro newsletter y recibe descuentos exclusivos, nuevos productos y mucho más.
+                </p>
+                <div className="row g-2 justify-content-center">
+                  <div className="col-md-6">
+                    <input 
+                      type="email" 
+                      className="form-control form-control-lg rounded-3 border-0"
+                      placeholder="tu@email.com"
+                    />
+                  </div>
+                  <div className="col-md-auto">
+                    <button className="btn btn-lg rounded-3 fw-bold px-4" style={{
+                      background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                      color: 'white',
+                      border: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#047857';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}>
+                      <i className="fas fa-paper-plane me-2"></i>
+                      Suscribirse
+                    </button>
+                  </div>
                 </div>
-                <div className="d-flex align-items-center text-white-50">
-                  <i className="fas fa-shield-alt me-2 text-warning"></i>
-                  <small>Garantía extendida</small>
-                </div>
-                <div className="d-flex align-items-center text-white-50">
-                  <i className="fas fa-star me-2 text-warning"></i>
-                  <small>+10k clientes felices</small>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4 text-center">
-              <div className="bg-white bg-opacity-10 rounded-3 p-4 backdrop-blur">
-                <h3 className="h4 mb-3">¡Ofertas especiales!</h3>
-                <p className="mb-3">Hasta 50% de descuento en productos seleccionados</p>
-                <button className="btn btn-warning btn-lg fw-bold">
-                  <i className="fas fa-tags me-2"></i>
-                  Ver ofertas
-                </button>
+                <small className="opacity-75 mt-3 d-block">
+                  <i className="fas fa-lock me-1"></i>
+                  100% libre de spam. Cancela cuando quieras.
+                </small>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      <div className="container">
-        {/* Filters and Search */}
-        <div className="row mb-5">
-          <div className="col-12">
-            <div className="card border-0 shadow-sm">
-              <div className="card-body">
-                <div className="row g-3 align-items-center">
-                  {/* Category Filter */}
-                  <div className="col-md-4">
-                    <label className="form-label fw-medium text-muted small">CATEGORÍA</label>
-                    <select 
-                      className="form-select form-select-lg border-0 bg-light rounded-3"
-                      value={filterCategory}
-                      onChange={(e) => setFilterCategory(e.target.value)}
-                    >
-                      {categories.map(cat => (
-                        <option key={cat} value={cat}>
-                          {cat === 'all' ? 'Todas las categorías' : cat.charAt(0).toUpperCase() + cat.slice(1)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Sort Filter */}
-                  <div className="col-md-4">
-                    <label className="form-label fw-medium text-muted small">ORDENAR POR</label>
-                    <select 
-                      className="form-select form-select-lg border-0 bg-light rounded-3"
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                    >
-                      <option value="name">Nombre A-Z</option>
-                      <option value="price-asc">Precio: Menor a Mayor</option>
-                      <option value="price-desc">Precio: Mayor a Menor</option>
-                    </select>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="col-md-4">
-                    <label className="form-label fw-medium text-muted small">RESULTADOS</label>
-                    <div className="bg-light rounded-3 p-3">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <span className="fw-bold text-primary fs-4">{filteredAndSortedProducts.length}</span>
-                        <span className="text-muted">productos encontrados</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Filters Section */}
-
-        {/* Newsletter Section */}
-        <section className="py-5">
-          <div className="card bg-gradient bg-primary text-white border-0 shadow-lg">
-            <div className="card-body p-5 text-center">
-              <div className="row justify-content-center">
-                <div className="col-lg-8">
-                  <h3 className="display-6 fw-bold mb-3">¡No te pierdas nuestras ofertas!</h3>
-                  <p className="lead mb-4 opacity-75">
-                    Suscríbete a nuestro newsletter y recibe descuentos exclusivos, nuevos productos y mucho más.
-                  </p>
-                  <div className="row g-2 justify-content-center">
-                    <div className="col-md-6">
-                      <input 
-                        type="email" 
-                        className="form-control form-control-lg rounded-3 border-0"
-                        placeholder="tu@email.com"
-                      />
-                    </div>
-                    <div className="col-md-auto">
-                      <button className="btn btn-warning btn-lg rounded-3 fw-bold px-4">
-                        <i className="fas fa-paper-plane me-2"></i>
-                        Suscribirse
-                      </button>
-                    </div>
-                  </div>
-                  <small className="opacity-75 mt-3 d-block">
-                    <i className="fas fa-lock me-1"></i>
-                    100% libre de spam. Cancela cuando quieras.
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <style jsx>{`
-        .product-card:hover .product-overlay {
-          opacity: 1 !important;
-          transition: opacity 0.3s ease;
-        }
-        
-        .backdrop-blur {
-          backdrop-filter: blur(10px);
-        }
-      `}</style>
+      {/* Custom Styles */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          .product-card:hover .product-overlay {
+            opacity: 1 !important;
+            transition: opacity 0.3s ease;
+          }
+          
+          .backdrop-blur {
+            backdrop-filter: blur(10px);
+          }
+        `
+      }} />
     </div>
   );
 }
