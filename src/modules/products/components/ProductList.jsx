@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { products, categories } from '../utils/dummyData';
 import { useCart } from '../../cart/hooks/useCart';
+import './ProductList.css';
 
 // Exportamos el componente principal ProductList
 export default function ProductList() {
@@ -16,8 +17,8 @@ export default function ProductList() {
   const [page, setPage] = useState(1);
   // estado `viewMode` controla si mostramos la lista en 'grid' o 'list'
   const [viewMode, setViewMode] = useState('grid'); // grid or list
-  // número de productos por página
-  const limit = 8;
+  // estado para controlar el número de productos por página
+  const [limit, setLimit] = useState(6);
 
   // Filtramos los productos por nombre y por categoría seleccionada
   const filtered = products.filter(p =>
@@ -119,6 +120,25 @@ export default function ProductList() {
               </div>
               <small className="text-muted">Próximamente</small>
             </div>
+
+            {/* Selector de productos por página */}
+            <div className="mb-4">
+              <label className="form-label">Productos por página</label>
+              <select
+                className="form-select rounded-pill"
+                value={limit}
+                onChange={(e) => {
+                  setLimit(Number(e.target.value));
+                  setPage(1); // Resetear a la primera página al cambiar el límite
+                }}
+              >
+                <option value="3">3 productos</option>
+                <option value="6">6 productos</option>
+                <option value="9">9 productos</option>
+                <option value="12">12 productos</option>
+                <option value="15">15 productos</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -136,20 +156,62 @@ export default function ProductList() {
             <div className="row g-4">
               {paginated.map(product => (
                 <div key={product.id} className="col-lg-4 col-md-6">
-                  <div className="card h-100 border-0 shadow-sm position-relative overflow-hidden"
-                       style={{ transition: 'transform 0.3s ease-in-out' }}
-                       onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                       onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                  >
+<div className="d-flex justify-content-center align-items-center mt-5">
+  <nav aria-label="Navegación de páginas">
+    <ul className="pagination pagination-lg mb-0">
+      <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+        <button
+          className="page-link rounded-pill me-2"
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+      </li>
+
+      {[...Array(totalPages)].map((_, i) => (
+        <li key={i} className={`page-item ${i + 1 === page ? 'active' : ''}`}>
+          <button
+            className={`page-link mx-1 ${i + 1 === page ? 'rounded-pill bg-primary border-primary' : 'rounded-pill'}`}
+            onClick={() => setPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        </li>
+      ))}
+
+      <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
+        <button
+          className="page-link rounded-pill ms-2"
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+{/* Botón fijo "volver arriba" */}
+<div className="scroll-to-top">
+  <button
+    className="btn btn-primary rounded-circle shadow-lg"
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+  >
+    <i className="fas fa-chevron-up"></i>
+  </button>
+</div>
+
                     {/* Badge indicando estado (ej. Nuevo) */}
-                    <div className="position-absolute top-0 start-0 m-3 z-3">
+                    <div className="new-badge">
                       <span className="badge bg-success bg-gradient rounded-pill px-3 py-2">
                         Nuevo
                       </span>
                     </div>
 
                     {/* Botón de wishlist (guardar favorito) */}
-                    <div className="position-absolute top-0 end-0 m-3 z-3">
+                    <div className="wishlist-button">
                       <button 
                         className="btn btn-light btn-sm rounded-circle shadow-sm"
                         onClick={(e) => {
@@ -161,65 +223,77 @@ export default function ProductList() {
                       </button>
                     </div>
 
-                    <Link to={`/products/${product.id}`} className="text-decoration-none">
-                      {/* Imagen del producto */}
-                      <div className="position-relative overflow-hidden">
-                        <img 
-                          src={product.image} 
-                          alt={product.name}
-                          loading="lazy"
-                          className="card-img-top object-fit-cover"
-                          style={{ height: '250px' }}
-                        />
-                        {/* Overlay con calificaciones y reseñas */}
-                        <div className="position-absolute bottom-0 start-0 end-0 bg-gradient bg-dark bg-opacity-75 p-3">
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div className="text-white">
-                              {/* Estrellas (estáticas en este ejemplo) */}
-                              <i className="fas fa-star text-warning"></i>
-                              <i className="fas fa-star text-warning"></i>
-                              <i className="fas fa-star text-warning"></i>
-                              <i className="fas fa-star text-warning"></i>
-                              <i className="far fa-star text-warning"></i>
-                              <small className="ms-1">(4.2)</small>
+                    <Link to={`/products/${product.id}`} className="text-decoration-none h-100">
+                      <div className="d-flex flex-column h-100">
+                        {/* Imagen del producto */}
+                        <div className="product-image-container">
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            loading="lazy"
+                            className="product-image"
+                          />
+                          {/* Overlay con calificaciones y reseñas */}
+                          <div className="rating-overlay">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div className="text-white">
+                                {/* Estrellas (estáticas en este ejemplo) */}
+                                <i className="fas fa-star text-warning"></i>
+                                <i className="fas fa-star text-warning"></i>
+                                <i className="fas fa-star text-warning"></i>
+                                <i className="fas fa-star text-warning"></i>
+                                <i className="far fa-star text-warning"></i>
+                                <small className="ms-1">(4.2)</small>
+                              </div>
+                              <small className="text-white-50">125 reseñas</small>
                             </div>
-                            <small className="text-white-50">125 reseñas</small>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Cuerpo de la tarjeta con información del producto */}
-                      <div className="card-body d-flex flex-column">
-                        <div className="mb-2">
-                          <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
-                            {categories.find(cat => cat.id === product.category)?.name || 'General'}
-                          </span>
-                        </div>
-
-                        <h5 className="card-title text-dark mb-2 fw-bold">{product.name}</h5>
-                        <p className="card-text text-muted small flex-grow-1">{product.description}</p>
-                        
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                          <div>
-                            <h4 className="text-primary fw-bold mb-0">
-                              ${product.price.toLocaleString('es-CL')}
-                            </h4>
-                            <small className="text-muted">
-                              <s>${(product.price * 1.2).toLocaleString('es-CL')}</s>
-                              <span className="badge bg-danger ms-1">-20%</span>
-                            </small>
+                        {/* Cuerpo de la tarjeta con información del producto */}
+                        <div className="card-body d-flex flex-column flex-grow-1">
+                          {/* Categoría */}
+                          <div className="category-container">
+                            <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
+                              {categories.find(cat => cat.id === product.category)?.name || 'General'}
+                            </span>
                           </div>
-                          <div className="text-end">
-                            <small className="text-success">
-                              <i className="fas fa-truck"></i> Envío gratis
-                            </small>
+
+                          {/* Título */}
+                          <h5 className="product-title text-dark">
+                            {product.name}
+                          </h5>
+
+                          {/* Descripción */}
+                          <p className="product-description text-muted small">
+                            {product.description}
+                          </p>
+                          
+                          {/* Precios y envío */}
+                          <div className="mt-auto">
+                            <div className="d-flex justify-content-between align-items-center mb-2">
+                              <div>
+                                <h4 className="product-price fw-bold mb-0">
+                                  ${product.price.toLocaleString('es-CL')}
+                                </h4>
+                                <small className="text-muted">
+                                  <s>${(product.price * 1.2).toLocaleString('es-CL')}</s>
+                                  <span className="badge bg-danger ms-1">-20%</span>
+                                </small>
+                              </div>
+                              <div className="text-end">
+                                <small className="text-success">
+                                  <i className="fas fa-truck"></i> Envío gratis
+                                </small>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </Link>
                     
                     {/* Botón para añadir al carrito (fuera del Link) */}
-                    <div className="card-footer bg-white border-0">
+                    <div className="product-card-footer">
                       <button 
                         className="btn btn-primary btn-lg w-100 rounded-pill fw-medium"
                         style={{ transition: 'transform 0.2s ease-in-out' }}
@@ -283,11 +357,10 @@ export default function ProductList() {
       </div>
 
       {/* Botón fijo "volver arriba" */}
-      <div className="position-fixed bottom-0 end-0 m-4" style={{ zIndex: 1050 }}>
+      <div className="scroll-to-top">
         <button 
           className="btn btn-primary rounded-circle shadow-lg"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{ width: '50px', height: '50px' }}
         >
           <i className="fas fa-chevron-up"></i>
         </button>
