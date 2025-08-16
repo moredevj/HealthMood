@@ -79,7 +79,15 @@ export default function Main() {
         <div className="row justify-content-center g-5">
           {filteredAndSortedProducts.slice(0, 3).map((product, index) => (
             <div className="col-12 col-sm-6 col-lg-3" key={product.id} style={{ marginLeft: index === 0 ? 'auto' : '2rem', marginRight: index === 2 ? 'auto' : '2rem' }}>
-              <div className="card h-100 border-0 rounded-4 overflow-hidden bg-white shadow-sm" style={{ position: 'relative' }}>
+              <div 
+                className="card h-100 border-0 rounded-4 overflow-hidden bg-white shadow-sm" 
+                style={{ 
+                  position: 'relative',
+                  transition: 'transform 0.3s ease-in-out'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
                 {/* Product Image */}
                 <div className="position-relative">
                   <img 
@@ -130,7 +138,16 @@ export default function Main() {
                         color: 'white',
                         border: 'none',
                         borderRadius: '8px',
-                        transition: 'all 0.3s ease'
+                        transition: 'all 0.3s ease, background 0.3s ease',
+                        transform: 'scale(1)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(0.98)';
+                        e.currentTarget.style.background = '#6B2FD1'; // Color morado sólido
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)';
                       }}
                     >
                       <i className="fa-solid fa-cart-plus"></i>

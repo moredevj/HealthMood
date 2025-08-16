@@ -156,7 +156,53 @@ export default function ProductList() {
             <div className="row g-4">
               {paginated.map(product => (
                 <div key={product.id} className="col-lg-4 col-md-6">
-                  <div className="card product-card">
+<div className="d-flex justify-content-center align-items-center mt-5">
+  <nav aria-label="Navegación de páginas">
+    <ul className="pagination pagination-lg mb-0">
+      <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
+        <button
+          className="page-link rounded-pill me-2"
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+      </li>
+
+      {[...Array(totalPages)].map((_, i) => (
+        <li key={i} className={`page-item ${i + 1 === page ? 'active' : ''}`}>
+          <button
+            className={`page-link mx-1 ${i + 1 === page ? 'rounded-pill bg-primary border-primary' : 'rounded-pill'}`}
+            onClick={() => setPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        </li>
+      ))}
+
+      <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
+        <button
+          className="page-link rounded-pill ms-2"
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+{/* Botón fijo "volver arriba" */}
+<div className="scroll-to-top">
+  <button
+    className="btn btn-primary rounded-circle shadow-lg"
+    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+  >
+    <i className="fas fa-chevron-up"></i>
+  </button>
+</div>
+
                     {/* Badge indicando estado (ej. Nuevo) */}
                     <div className="new-badge">
                       <span className="badge bg-success bg-gradient rounded-pill px-3 py-2">
@@ -250,6 +296,9 @@ export default function ProductList() {
                     <div className="product-card-footer">
                       <button 
                         className="btn btn-primary btn-lg w-100 rounded-pill fw-medium"
+                        style={{ transition: 'transform 0.2s ease-in-out' }}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(0.98)'}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                         onClick={(e) => {
                           e.preventDefault();
                           addToCart(product);
