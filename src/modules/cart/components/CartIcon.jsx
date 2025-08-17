@@ -22,7 +22,7 @@ export default function CartIcon() {
         {/* Item count badge */}
         {count > 0 && (
           <span 
-            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white"
+            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border"
             style={{ fontSize: '10px', minWidth: '20px', height: '20px' }}
           >
             {count > 99 ? '99+' : count}

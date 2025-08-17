@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useCart } from '../../cart/hooks/useCart';
 import { MOCK } from '../utils/dummyData.js';
 import CategoriaGrid from './CategoriaGrid'; // Importa el componente
 
@@ -44,11 +45,7 @@ export default function Main() {
     setFavorites(newFavorites);
   };
 
-  const addToCart = (product) => {
-    // Simulate add to cart
-    console.log('Added to cart:', product);
-    // Here you would typically dispatch to cart context/redux
-  };
+  const { addToCart } = useCart();
 
   if (isLoading) {
     return (
@@ -151,7 +148,7 @@ export default function Main() {
                   <div className="mt-auto text-end">
                     <button 
                       className="btn px-3 py-2 d-inline-flex align-items-center gap-2 fw-medium"
-                      onClick={() => addToCart(product)}
+                      onClick={() => addToCart(product, 1)}
                       style={{ 
                         background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
                         color: 'white',

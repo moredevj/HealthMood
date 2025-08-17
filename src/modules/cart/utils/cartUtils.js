@@ -1,7 +1,7 @@
 // Funciones auxiliares para el carrito
 
 export function calcularSubtotal(items) {
-    return items.reduce((acc, item) => acc + item.price, 0);
+    return items.reduce((acc, item) => acc + item.price * (item.quantity || 1), 0);
 }
 
 export function calcularShipping(items) {

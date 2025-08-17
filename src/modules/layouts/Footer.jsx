@@ -34,16 +34,16 @@ export default function Footer() {
               <li className="mb-2"><a className="link-light" href="#">Inicio</a></li>
               <li className="mb-2"><a className="link-light" href="#">Quienes Somos</a></li>
               <li className="mb-2"><a className="link-light" href="#">Catálogo</a></li>
-              <li className="mb-2"><a className="link-light" href="#">Blog</a></li>
-              <li className="mb-2"><a className="link-light" href="#">Contacto</a></li>
+              <li className="mb-2"><a className="link-light" href="/blog">Blog</a></li>
+              <li className="mb-2"><a className="link-light" href="/contact">Contacto</a></li>
             </ul>
           </div>
 
           <div className="col-6 col-md-3">
             <h5 className="fw-bold mb-4">Categorías</h5>
             <ul className="list-unstyled">
-              <li className="mb-2"><a className="link-light" href="#">Para Perros</a></li>
-              <li className="mb-2"><a className="link-light" href="#">Para Gatos</a></li>
+              <li className="mb-2"><a className="link-light" href="/products">Para Perros</a></li>
+              <li className="mb-2"><a className="link-light" href="/products">Para Gatos</a></li>
               <li className="mb-2"><a className="link-light" href="#">Alimento</a></li>
               <li className="mb-2"><a className="link-light" href="#">Accesorios</a></li>
               <li className="mb-2"><a className="link-light" href="#">Salud e Higiene</a></li>
@@ -55,12 +55,12 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li className="mb-3">
                 <a className="link-light text-decoration-none" href="tel:+56990023467">
-                  📞 +569 90023467
+                  📞 +569 80653796
                 </a>
               </li>
               <li className="mb-3">
                 <a className="link-light text-decoration-none" href="mailto:healthmood@gmail.com">
-                  ✉️ tiendita@gmail.com
+                  ✉️ info@healthmood.cl
                 </a>
               </li>
             </ul>

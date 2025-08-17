@@ -2,7 +2,7 @@ import { useCart } from '../hooks/useCart';
 import { useState } from 'react';
 
 export default function CartPage() {
-  const { items, removeFromCart, subtotal, shipping, total } = useCart();
+  const { items, removeFromCart, subtotal, shipping, total, increaseQuantity, decreaseQuantity } = useCart();
   const [promoCode, setPromoCode] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
 
@@ -21,12 +21,16 @@ export default function CartPage() {
       <div className="row align-items-center mb-5">
         <div className="col">
           <div className="d-flex align-items-center">
-            <div className="bg-primary bg-gradient rounded-circle me-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
-              <i className="fas fa-shopping-cart text-white fs-4"></i>
+            <div className="bg-gradient rounded-circle me-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
+              <i className="fas fa-shopping-cart fs-4" style={{ color: '#8061c5' }}></i>
             </div>
             <div>
-              <h1 className="display-5 fw-bold text-dark mb-1">Carrito de Compras</h1>
-              <p className="text-muted mb-0">{items.length} {items.length === 1 ? 'producto' : 'productos'} en tu carrito</p>
+              <h1 className="display-5 fw-bold mb-1" style={{ color: '#8061c5' }}>Carrito de Compras</h1>
+              <p className="text-muted mb-0">{
+                items.reduce((acc, item) => acc + (item.quantity || 1), 0)
+              } {
+                items.reduce((acc, item) => acc + (item.quantity || 1), 0) === 1 ? 'producto' : 'productos'
+              } en tu carrito</p>
             </div>
           </div>
         </div>
@@ -50,7 +54,7 @@ export default function CartPage() {
             </div>
             <h3 className="text-dark mb-3">Tu carrito está vacío</h3>
             <p className="text-muted mb-4">¡Agrega algunos productos increíbles a tu carrito!</p>
-            <a href="/products" className="btn btn-primary btn-lg rounded-pill px-5">
+            <a href="/products" className="btn btn-outline-primary btn-lg rounded-pill px-5">
               <i className="fas fa-shopping-bag me-2"></i>
               Explorar productos
             </a>
@@ -115,11 +119,11 @@ export default function CartPage() {
                         <div className="d-flex align-items-center">
                           <label className="form-label me-2 mb-0 fw-medium">Cantidad:</label>
                           <div className="btn-group" role="group">
-                            <button className="btn btn-outline-secondary btn-sm">
+                            <button className="btn btn-outline-secondary btn-sm" onClick={() => decreaseQuantity(item.id)} disabled={item.quantity <= 1}>
                               <i className="fas fa-minus"></i>
                             </button>
-                            <button className="btn btn-outline-secondary btn-sm px-3">1</button>
-                            <button className="btn btn-outline-secondary btn-sm">
+                            <button className="btn btn-outline-secondary btn-sm px-3" disabled>{item.quantity}</button>
+                            <button className="btn btn-outline-secondary btn-sm" onClick={() => increaseQuantity(item.id)}>
                               <i className="fas fa-plus"></i>
                             </button>
                           </div>
@@ -160,7 +164,7 @@ export default function CartPage() {
             <div className="card border-0 shadow-sm">
               <div className="card-body p-4">
                 <h6 className="fw-bold mb-3">
-                  <i className="fas fa-tag text-success me-2"></i>
+                  <i className="fas fa-tag me-2"></i>
                   ¿Tienes un código promocional?
                 </h6>
                 <div className="row g-3">
@@ -175,7 +179,7 @@ export default function CartPage() {
                   </div>
                   <div className="col-md-4">
                     <button 
-                      className="btn btn-success btn-lg w-100 rounded-pill"
+                      className="btn btn-outline-primary btn-lg w-100 rounded-pill"
                       onClick={handlePromoCode}
                       disabled={isPromoApplied}
                     >
@@ -194,8 +198,8 @@ export default function CartPage() {
                   </div>
                 </div>
                 {isPromoApplied && (
-                  <div className="alert alert-success mt-3 mb-0" role="alert">
-                    <i className="fas fa-check-circle me-2"></i>
+                  <div className="alert mt-3 mb-0" role="alert" style={{ background: '#e9d6fb', color: '#4A00E0' }}>
+                    <i className="fas fa-check-circle me-2" ></i>
                     ¡Código aplicado! Descuento del 10% agregado.
                   </div>
                 )}
@@ -212,8 +216,8 @@ export default function CartPage() {
           <div className="col-lg-4">
             <div className="position-sticky" style={{ top: '20px' }}>
               <div className="card border-0 shadow-sm">
-                <div className="card-header bg-primary bg-gradient text-white py-4">
-                  <h5 className="mb-0 fw-bold">
+                <div className="card-header text-white py-4 text-center" style={{ background: '#8061c5' }}>
+                  <h5 className="mb-0 fw-bold d-inline-block">
                     <i className="fas fa-calculator me-2"></i>
                     Resumen del pedido
                   </h5>
@@ -222,14 +226,14 @@ export default function CartPage() {
                 <div className="card-body p-4">
                   {/* Subtotal */}
                   <div className="d-flex justify-content-between align-items-center py-2">
-                    <span className="text-muted">Subtotal ({items.length} productos)</span>
+                    <span className="text-muted">Subtotal ({items.reduce((acc, item) => acc + (item.quantity || 1), 0)} productos)</span>
                     <span className="fw-medium">${subtotal.toLocaleString('es-CL')}</span>
                   </div>
 
                   {/* Shipping */}
                   <div className="d-flex justify-content-between align-items-center py-2">
                     <span className="text-muted">
-                      Envío (SpeedTiendita)
+                      Envío
                       <i className="fas fa-info-circle ms-1 text-info" title="Envío express en 24 horas"></i>
                     </span>
                     <span className="fw-medium">${shipping.toLocaleString('es-CL')}</span>
@@ -238,11 +242,11 @@ export default function CartPage() {
                   {/* Discount */}
                   {isPromoApplied && (
                     <div className="d-flex justify-content-between align-items-center py-2">
-                      <span className="text-success">
+                      <span style={{ color: '#4A00E0' }}>
                         <i className="fas fa-tag me-1"></i>
                         Descuento (10%)
                       </span>
-                      <span className="fw-medium text-success">-${discount.toLocaleString('es-CL')}</span>
+                      <span className="fw-medium" style={{ color: '#4A00E0' }}>-${discount.toLocaleString('es-CL')}</span>
                     </div>
                   )}
 
@@ -257,7 +261,7 @@ export default function CartPage() {
                   {/* Savings badge */}
                   {isPromoApplied && (
                     <div className="text-center mb-3">
-                      <span className="badge bg-success bg-gradient fs-6 px-3 py-2 rounded-pill">
+                      <span className="badge fs-6 px-3 py-2 rounded-pill" style={{ background: '#e9d6fb', color: '#4A00E0' }}>
                         <i className="fas fa-piggy-bank me-1"></i>
                         ¡Ahorras ${discount.toLocaleString('es-CL')}!
                       </span>
@@ -265,12 +269,12 @@ export default function CartPage() {
                   )}
 
                   {/* Checkout button */}
-                  <div className="d-grid mb-3">
+                  <div className="d-grid mb-3" style={{ background: '#8061c5' }}>
                     <button 
-                      className="btn btn-success btn-lg rounded-pill fw-bold py-3"
+                      className="btn btn-lg rounded-pill fw-bold py-3 text-white"
                       onClick={() => window.location.href = "https://mystickermania.com/cdn/stickers/memes/bugs-bunny-not-bad-meme-512x512.png"}
                     >
-                      <i className="fas fa-credit-card me-2"></i>
+                      <i className="fas fa-credit-card me-2" ></i>
                       Proceder al pago
                     </button>
                   </div>

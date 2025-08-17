@@ -1,5 +1,5 @@
 // src/modules/auth/hook/useAuth.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import { users as seedUsers } from '../utils/dummyData.js';
 
 const USERS_KEY = 'auth_users';
@@ -12,7 +12,9 @@ function readUsers() {
   return seedUsers;
 }
 
-export function useAuth() {
+const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const raw = sessionStorage.getItem(AUTH_KEY);
     return raw ? JSON.parse(raw) : null;
@@ -51,5 +53,13 @@ export function useAuth() {
     setUser(null);
   };
 
-  return { user, isAuthenticated: !!user, login, register, logout };
+  return (
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
 }

@@ -16,9 +16,12 @@ import {
   
 } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
+import { useCart } from '../cart/hooks/useCart';
 import './Navbar.css';
 
 export default function Navbar() {
+  const { items } = useCart();
+  const cartCount = items.reduce((acc, item) => acc + (item.quantity || 1), 0);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -142,14 +145,14 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <NavLink
-                  to="/contact"
+                  to="/blog"
                   className={({ isActive }) =>
                     `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
                       isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
                     }`
                   }
                 >
-                  CONTACTO
+                  BLOG
                 </NavLink>
               </li>
             </ul>
@@ -189,17 +192,18 @@ export default function Navbar() {
                       id="userMenu"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
+                      style={{ color: 'white', background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)' }}
                     >
                       <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center">
                         <FaUser className="text-white" style={{ fontSize: '12px' }} />
                       </div>
                       <div className="d-flex flex-column align-items-start lh-1">
-                        <span className="fw-medium text-dark" style={{ fontSize: '14px' }}>
+                        <span className="fw-medium" style={{ fontSize: '14px', color: 'white' }}>
                           {user?.username}
                         </span>
-                        <small className="text-muted">Mi cuenta</small>
+                        <small style={{ color: 'white' }}>Mi cuenta</small>
                       </div>
-                      <FaChevronDown className="text-muted" style={{ fontSize: '10px' }} />
+                      <FaChevronDown className="text-white" style={{ fontSize: '10px' }} />
                     </button>
                     <ul className="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2">
                       <li>
@@ -215,7 +219,7 @@ export default function Navbar() {
                       </li>
                       <li>
                         <Link className="dropdown-item rounded-2 p-2" to="/orders">
-                          Mis Pedidos
+                          Mis Envíos
                         </Link>
                       </li>
                       <li>
@@ -239,11 +243,45 @@ export default function Navbar() {
                 </>
               )}
               {/* Cart */}
-              <li className="nav-item ms-2">
-                <div className="cart-wrapper">
-                  <CartIcon style={{ fontSize: '3 rem' }} />
-                </div>
-              </li>
+                <NavLink
+                  to="/cart"
+                  className="btn px-4 py-2 d-inline-flex align-items-center gap-2 fw-medium btn btn-outline-primary rounded-pill"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
+                    color: 'purple',
+                    border: 'none',
+                    borderRadius: '8px',
+                    transition: 'all 0.3s ease, background 0.3s ease',
+                    transform: 'scale(1)'
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'scale(0.98)';
+                    e.currentTarget.style.background = '#6B2FD1';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)';
+                  }}
+                >
+                  <i className="fa-solid fa-cart-shopping"></i>
+                  <span className="badge ms-1 me-2" style={{
+                    fontWeight: 'bold',
+                    fontSize: '0.75rem',
+                    verticalAlign: 'middle',
+                    background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)',
+                    color: 'white',
+                    border: 'none',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                    padding: '2px 7px',
+                    minWidth: '18px',
+                    height: '18px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>{cartCount}</span>
+                  <span style={{ color: 'white' }}>Mi Carrito</span>
+                </NavLink>
+          
             </ul>
           </div>
           

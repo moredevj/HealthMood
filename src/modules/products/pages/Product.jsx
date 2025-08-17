@@ -49,32 +49,13 @@ export default function Product() {
               {/* Control de cantidad */}
               <div className="mb-4">
                 <label className="form-label">Cantidad:</label>
-                <div className="input-group">
-                  <button 
-                    className="btn btn-outline-primary"
-                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                    disabled={quantity <= 1}
-                  >
-                    <i className="fas fa-minus"><FaMinus /></i>
+                <div className="btn-group" role="group">
+                  <button className="btn btn-outline-primary" onClick={() => setQuantity(prev => Math.max(1, prev - 1))} disabled={quantity <= 1}>
+                    <FaMinus />
                   </button>
-                  <input
-                    type="number"
-                    className="form-control text-center"
-                    value={quantity}
-                    onChange={(e) => {
-                      const value = Math.floor(parseInt(e.target.value));
-                      if (!isNaN(value) && value >= 1) {
-                        setQuantity(value);
-                      }
-                    }}
-                    min="1"
-                    style={{ maxWidth: '80px' }}
-                  />
-                  <button 
-                    className="btn btn-outline-primary"
-                    onClick={() => setQuantity(prev => prev + 1)}
-                  >
-                    <i className="fas fa-plus"><IoMdAdd /></i>
+                  <button className="btn btn-outline-primary px-3" disabled>{quantity}</button>
+                  <button className="btn btn-outline-primary" onClick={() => setQuantity(prev => prev + 1)}>
+                    <IoMdAdd />
                   </button>
                 </div>
               </div>
@@ -90,9 +71,7 @@ export default function Product() {
               <div className="d-grid">
                 <button
                   className="btn btn-primary btn-lg"
-                  onClick={() => {
-                    Array(quantity).fill(0).forEach(() => addToCart(product));
-                  }}
+                  onClick={() => addToCart(product, quantity)}
                 >
                   <i className="fas fa-shopping-cart me-2"></i>
                   Agregar {quantity} al carrito
