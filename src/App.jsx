@@ -8,6 +8,8 @@ import RegisterPage from './modules/auth/pages/RegisterPage';
 import ProductsPage from './modules/products/pages/ProductsPage';
 import Product from './modules/products/pages/Product';
 import CartPage from './modules/cart/pages/CartPage';
+import BlogPage from './modules/blog/pages/BlogPage';
+import PostDetailPage from './modules/blog/pages/PostDetailPage';
 import { CartProvider } from './modules/cart/components/CartProvider.jsx';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<PostDetailPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>

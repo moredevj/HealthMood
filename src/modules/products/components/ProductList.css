@@ -98,6 +98,33 @@
   background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);
   transition: all 0.3s ease;
   border: none;
+}
+
+/* Estilos de paginación */
+.blog-pagination .page-link {
+  color: #5706ad;
+  border-radius: 0;
+  margin: 0 2px;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.blog-pagination .page-item.active .page-link {
+  background-color: #5706ad;
+  border-color: #5706ad;
+  color: white;
+}
+
+.blog-pagination .page-item:not(.active) .page-link:hover {
+  background-color: #f8f9fa;
+  color: #5706ad;
+}
+
+.blog-pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;}
   position: relative;
   overflow: hidden;
 }
