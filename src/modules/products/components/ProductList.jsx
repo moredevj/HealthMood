@@ -270,37 +270,51 @@ export default function ProductList() {
 
           {/* Paginación */}
           {totalPages > 1 && (
-            <div className="d-flex justify-content-center align-items-center mt-5">
-              <nav aria-label="Navegación de páginas">
-                <ul className="pagination pagination-lg mb-0">
+            <div className="d-flex justify-content-center mt-5">
+              <nav aria-label="Navegación de productos">
+                <ul className="blog-pagination pagination">
+                  {/* Botón Anterior */}
                   <li className={`page-item ${page === 1 ? 'disabled' : ''}`}>
-                    <button 
-                      className="page-link rounded-pill me-2"
-                      onClick={() => setPage(page - 1)}
+                    <button
+                      className="page-link"
+                      onClick={() => setPage(prev => prev - 1)}
                       disabled={page === 1}
                     >
-                      <i className="fas fa-chevron-left"></i>
+                      <i className="fas fa-chevron-left me-1"></i>
+                      Anterior
                     </button>
                   </li>
-                  
-                  {[...Array(totalPages)].map((_, i) => (
-                    <li key={i} className={`page-item ${i + 1 === page ? 'active' : ''}`}>
+
+                  {/* Números de página */}
+                  {[...Array(totalPages)].map((_, index) => (
+                    <li 
+                      key={index + 1} 
+                      className={`page-item ${page === index + 1 ? 'active' : ''}`}
+                    >
                       <button
-                        className={`page-link mx-1 ${i + 1 === page ? 'rounded-pill bg-primary border-primary' : 'rounded-pill'}`}
-                        onClick={() => setPage(i + 1)}
+                        className="page-link"
+                        onClick={() => setPage(index + 1)}
+                        style={
+                          page === index + 1 
+                            ? { backgroundColor: '#5706ad', borderColor: '#5706ad' }
+                            : { color: '#5706ad' }
+                        }
                       >
-                        {i + 1}
+                        {index + 1}
                       </button>
                     </li>
                   ))}
-                  
+
+                  {/* Botón Siguiente */}
                   <li className={`page-item ${page === totalPages ? 'disabled' : ''}`}>
-                    <button 
-                      className="page-link rounded-pill ms-2"
-                      onClick={() => setPage(page + 1)}
+                    <button
+                      className="page-link"
+                      onClick={() => setPage(prev => prev + 1)}
                       disabled={page === totalPages}
+                      style={{ color: '#5706ad' }}
                     >
-                      <i className="fas fa-chevron-right"></i>
+                      Siguiente
+                      <i className="fas fa-chevron-right ms-1"></i>
                     </button>
                   </li>
                 </ul>
