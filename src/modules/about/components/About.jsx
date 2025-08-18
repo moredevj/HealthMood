@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/about.css';
+import dogImage from '/src/assets/golden-retriever-dog-1370773977VyS.jpg';
 
 export default function About() {
   return (
@@ -57,7 +58,7 @@ export default function About() {
           
           <div className="col-lg-6 d-none d-lg-block">
             <img 
-              src="/src/assets/golden-retriever-dog-1370773977VyS.jpg"
+              src={dogImage}
               alt="Perro amigable"
               className="img-fluid rounded-4 shadow-sm"
               style={{

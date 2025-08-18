@@ -18,6 +18,7 @@ import {
 import { useState, useEffect } from 'react';
 import { useCart } from '../cart/hooks/useCart';
 import './Navbar.css';
+import { initializeNavHoverEffect } from './NavbarHoverEffect';
 
 export default function Navbar() {
   const { items } = useCart();
@@ -33,6 +34,8 @@ export default function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
+    initializeNavHoverEffect();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
