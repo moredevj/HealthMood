@@ -107,7 +107,7 @@ export default function Main() {
                 {/* Product Image */}
                 <div className="position-relative">
                   <img 
-                    src={product.img} 
+                    src={product.image} 
                     className="card-img-top" 
                     alt={product.name}
                     style={{ 
