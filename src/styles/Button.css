@@ -1,0 +1,90 @@
+.btn-custom {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: var(--transition-base);
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Variantes */
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--gradient-secondary);
+  color: white;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+}
+
+/* Tamaños */
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.btn-md {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+}
+
+/* Estados */
+.btn-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-custom:active {
+  transform: translateY(0);
+}
+
+.btn-custom:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Efecto de ripple al hacer click */
+.btn-custom::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.btn-custom:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}

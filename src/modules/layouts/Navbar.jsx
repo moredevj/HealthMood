@@ -1,4 +1,4 @@
-// src/modules/layouts/Navbar.jsx
+
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/hook/useAuth';
 import CartIcon from '../cart/components/CartIcon';
@@ -145,19 +145,19 @@ export default function Navbar() {
               </li>
               <li className="nav-item">
                 <NavLink
-                  to="/blog"
+                  to="/contact"
                   className={({ isActive }) =>
                     `nav-link px-3 py-2 rounded-pill mx-1 nav-link-custom ${
                       isActive ? 'active bg-primary text-white shadow-sm' : 'text-dark'
                     }`
                   }
                 >
-                  BLOG
+                  CONTACTO
                 </NavLink>
               </li>
             </ul>
 
-            {/* Search icon */}
+
             <form onSubmit={handleSearch} className="me-2">
               <button
                 type="submit"
