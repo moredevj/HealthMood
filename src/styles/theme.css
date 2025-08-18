@@ -21,7 +21,7 @@
   --text-light: #fff;
   
   /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  --gradient-primary: linear-gradient(135deg, #8061C5 0%, #5706AD 100%);
   --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
   --gradient-tertiary: linear-gradient(135deg, var(--tertiary) 0%, var(--tertiary-dark) 100%);
   --gradient-light: linear-gradient(180deg, #F2EEFC 0%, #EDFDF0 100%);

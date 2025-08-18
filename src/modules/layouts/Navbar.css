@@ -1,6 +1,20 @@
 /* Importar tema global */
 @import '../../styles/theme.css';
 
+/* Promo Bar */
+.promo-bar {
+  background: var(--gradient-primary);
+  color: var(--text-light);
+  padding: var(--spacing-sm) 0;
+  text-align: center;
+  font-family: var(--font-family-base);
+}
+
+.promo-bar small {
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.5px;
+}
+
 /* Navbar Styles */
 .navbar {
   font-family: 'Lato', sans-serif;
@@ -16,7 +30,7 @@
 }
 
 .navbar-scrolled .navbar-logo {
-  height: 45px !important;
+  height: 40px !important;
   transition: height 0.3s ease;
 }
 
@@ -28,13 +42,14 @@
 
 /* Navigation Links */
 .nav-link-custom {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
   letter-spacing: 0.5px;
   transition: var(--transition-base);
   position: relative;
   padding: var(--spacing-sm) var(--spacing-md) !important;
   margin: 0 var(--spacing-xs);
+  color: var(--text-dark);
 }
 
 .nav-link-custom::after {
@@ -44,9 +59,31 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--gradient-primary);
+  background: var(--gradient-navbar);
   transition: var(--transition-base);
   transform: translateX(-50%);
+}
+
+.nav-link-custom:hover::after {
+  width: 100%;
+}
+
+/* Botones del Navbar */
+.navbar-btn {
+  background: var(--gradient-navbar);
+  color: var(--text-light);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-base);
+  border: none;
+  text-decoration: none !important;
+}
+
+.navbar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: var(--text-light);
 }
 
 .nav-link-custom:hover::after,

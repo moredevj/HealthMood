@@ -1,4 +1,4 @@
-@import '../../../styles/theme.css';
+@import '/src/styles/theme.css';
 
 /* Estilos generales del blog */
 .blog-header {

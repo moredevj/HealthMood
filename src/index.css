@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;900&display=swap');
 
 /* Importar estilos base */
-@import './styles/theme.css';
-@import './styles/utilities.css';
-@import './styles/components.css';
+@import '/src/styles/theme.css';
+@import '/src/styles/utilities.css';
+@import '/src/styles/components.css';
 
 /* Estilos globales */
 * {
