@@ -1,0 +1,115 @@
+/* Blog.css */
+
+/* Estilos generales del blog */
+.blog-header {
+  color: #5706ad;
+}
+
+/* Estilos de las tarjetas de post */
+.blog-post-card {
+  height: 100%;
+  border: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.blog-post-image {
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-post-title {
+  color: #5706ad;
+  text-decoration: none;
+}
+
+.blog-post-title:hover {
+  color: #8061c5;
+}
+
+.blog-post-meta {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.blog-read-more {
+  border-color: #5706ad;
+  color: #5706ad;
+}
+
+.blog-read-more:hover {
+  background-color: #5706ad;
+  color: white;
+}
+
+/* Estilos de la página de detalle */
+.blog-detail-image {
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.blog-detail-content {
+  line-height: 1.8;
+}
+
+.blog-back-button {
+  color: #5706ad;
+  text-decoration: none;
+}
+
+.blog-back-button:hover {
+  color: #8061c5;
+}
+
+/* Estilos de comentarios */
+.blog-comment {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border: none;
+}
+
+.blog-comment-author {
+  color: #5706ad;
+}
+
+/* Estilos de paginación */
+.blog-pagination .page-link {
+  color: #5706ad;
+}
+
+.blog-pagination .page-item.active .page-link {
+  background-color: #5706ad;
+  border-color: #5706ad;
+  color: white;
+}
+
+/* Gradientes y efectos */
+.blog-gradient-bg {
+  background: linear-gradient(135deg, #8061c5 0%, #5706ad 100%);
+}
+
+/* Animaciones */
+@keyframes pawFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.blog-read-more{
+    color: #ffffff;
+}
+
+

@@ -13,7 +13,8 @@ import OrdersPage from './modules/profile/pages/OrdersPage.jsx';
 import { CartProvider } from './modules/cart/components/CartProvider.jsx';
 import { AuthProvider } from './modules/auth/hook/useAuth.jsx';
 import ContactPage from './modules/about/pages/ContactPage';
-import BlogPage from './modules/about/pages/BlogPage';
+import BlogPage from './modules/blog/pages/BlogPage';
+import PostDetailPage from './modules/blog/pages/PostDetailPage'; 
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<PostDetailPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </Routes>
