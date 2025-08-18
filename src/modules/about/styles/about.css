@@ -1,18 +1,13 @@
-:root {
-  --primary-color: #8366b3;
-  --primary-light: #a991d4;
-  --bg-light: #f8f5ff;
-  --white: #ffffff;
-}
+@import '../../../styles/theme.css';
 
 .about-container {
   background-color: var(--bg-light);
-  padding: 3rem 0;
+  padding: var(--spacing-xl) 0;
 }
 
 .about-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: var(--spacing-xxl);
 }
 
 .mission-card,
@@ -24,25 +19,26 @@
 .vision-card img {
   height: 120px !important;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: var(--radius-lg);
 }
 
 .values-section {
-  margin-top: 4rem;
+  margin-top: var(--spacing-xxl);
   text-align: center;
 }
 
 .value-card {
-  background: var(--white);
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+  background: var(--text-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
   text-align: center;
 }
 
 .value-card:hover {
   transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
 .dog-image {

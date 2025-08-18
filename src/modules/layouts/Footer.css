@@ -1,51 +1,54 @@
+@import '../../../styles/theme.css';
+
 /* Estilos generales del footer */
 footer {
-  background: #8061c5 ;
-  font-family: 'Lato', sans-serif;
-  color: white;
+  background: var(--primary-light);
+  font-family: var(--font-family-base);
+  color: var(--text-light);
 }
 
 /* Estilos para el logo */
 .footer-logo img {
   height: 100px;
   filter: brightness(0) invert(1);
+  transition: var(--transition-base);
 }
 
 /* Estilos para los iconos de redes sociales */
 .social-icons-wrapper {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--spacing-lg);
   align-items: center;
 }
 
 .social-icon {
-  font-size: 28px;
-  transition: all 0.3s ease;
-  color: white;
+  font-size: var(--font-size-xl);
+  transition: var(--transition-base);
+  color: var(--text-light);
 }
 
 .social-icon:hover {
   transform: translateY(-3px);
-  opacity: 0.8;
+  opacity: var(--opacity-hover);
 }
 
 /* Estilos para los enlaces */
 .link-light {
-  color: white !important;
+  color: var(--text-light) !important;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
 .link-light:hover {
-  opacity: 0.8;
-  padding-left: 5px;
+  opacity: var(--opacity-hover);
+  padding-left: var(--spacing-xs);
 }
 
 /* Estilos para las secciones */
 .footer-section h5 {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-lg);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Estilos para la lista de enlaces */

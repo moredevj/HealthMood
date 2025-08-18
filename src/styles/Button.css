@@ -1,10 +1,12 @@
+@import './theme.css';
+
 .btn-custom {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
+  padding: var(--spacing-md);
+  font-weight: var(--font-weight-medium);
   border-radius: var(--radius-md);
   transition: var(--transition-base);
   border: none;
@@ -15,12 +17,12 @@
 /* Variantes */
 .btn-primary {
   background: var(--gradient-primary);
-  color: white;
+  color: var(--text-light);
 }
 
 .btn-secondary {
   background: var(--gradient-secondary);
-  color: white;
+  color: var(--text-light);
 }
 
 .btn-outline-primary {

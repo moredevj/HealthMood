@@ -52,12 +52,9 @@ export default function Navbar() {
   return (
     <>
       {/* Top promotional bar */}
-      <div className="bg-gradient bg-dark" style={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        padding: '8px 0'
-      }}>
+      <div className="promo-bar">
         <div className="container">
-          <div className="d-flex justify-content-center align-items-center  text-white">
+          <div className="d-flex justify-content-center align-items-center text-white">
             <small className="fw-medium">¡Envío gratis en compras superiores a $50.000!</small>
           </div>
         </div>
@@ -158,10 +155,10 @@ export default function Navbar() {
             </ul>
 
 
-            <form onSubmit={handleSearch} className="me-2">
+            <form onSubmit={handleSearch}>
               <button
                 type="submit"
-                className="btn btn-outline-secondary rounded-circle p-2"
+                className="search-button"
                 title="Buscar"
               >
                 <FaSearch />
@@ -176,9 +173,9 @@ export default function Navbar() {
                   <li className="nav-item me-2">
                     <NavLink
                       to="/login"
-                      className="btn btn-outline-primary rounded-pill px-4 py-2"
+                      className="auth-button auth-button-login text-decoration-none"
                     >
-                      <FaSignInAlt className="me-2" />
+                      <FaSignInAlt className="me-1" />
                       Iniciar Sesión
                     </NavLink>
                   </li>
@@ -188,11 +185,10 @@ export default function Navbar() {
                   {/* User dropdown */}
                   <li className="nav-item dropdown">
                     <button
-                      className="btn btn-light rounded-pill px-3 py-2 d-flex align-items-center gap-2 dropdown-toggle user-dropdown"
+                      className="user-dropdown d-flex align-items-center gap-2 dropdown-toggle"
                       id="userMenu"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
-                      style={{ color: 'white', background: 'linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%)' }}
                     >
                       <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center">
                         <FaUser className="text-white" style={{ fontSize: '12px' }} />
