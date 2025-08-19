@@ -5,11 +5,7 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
-    phone: '',
     email: '',
-    street: '',
-    city: '',
-    commune: '',
     password: '',
     confirm: ''
   });
@@ -24,13 +20,13 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
     e.preventDefault();
     const newErrors = {};
     
-    if (!form.firstName.trim()) newErrors.firstName = 'El nombre es requerido';
-    if (!form.lastName.trim()) newErrors.lastName = 'El apellido es requerido';
-    if (!form.email.trim()) newErrors.email = 'El email es requerido';
-    if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Email inválido';
-    if (!form.password) newErrors.password = 'La contraseña es requerida';
-    if (form.password.length < 6) newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-    if (form.password !== form.confirm) newErrors.confirm = 'Las contraseñas no coinciden';
+  if (!form.firstName.trim()) newErrors.firstName = 'El nombre es requerido';
+  if (!form.lastName.trim()) newErrors.lastName = 'El apellido es requerido';
+  if (!form.email.trim()) newErrors.email = 'El email es requerido';
+  if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = 'Email inválido';
+  if (!form.password) newErrors.password = 'La contraseña es requerida';
+  if (form.password.length < 6) newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+  if (form.password !== form.confirm) newErrors.confirm = 'Las contraseñas no coinciden';
 
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
@@ -38,11 +34,7 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
         const customerData = {
           firstName: form.firstName.trim(),
           lastName: form.lastName.trim(),
-          phone: form.phone.trim(),
           email: form.email.trim(),
-          street: form.street.trim(),
-          city: form.city.trim(),
-          commune: form.commune.trim(),
           password: form.password,
           rol: 'USER'
         };
@@ -70,19 +62,6 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="needs-validation">
-      <div className="text-center mb-4">
-        <div className="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-             style={{ 
-               width: '80px', 
-               height: '80px', 
-               background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
-               animation: 'pawFloat 3s ease-in-out infinite'
-             }}>
-          <FaPaw className="text-white" style={{ fontSize: '2.5rem' }} />
-        </div>
-        <h2 className="fw-bold" style={{ color: '#5706ad' }}>Únete a nuestra familia peludita</h2>
-        <p className="text-muted">Crea tu cuenta y descubre productos increíbles para tu mascota</p>
-      </div>
 
       <div className="row g-3">
         {/* Nombre y Apellido */}
@@ -123,8 +102,8 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
           </div>
         </div>
 
-        {/* Email y Teléfono */}
-        <div className="col-md-6">
+        {/* Email */}
+        <div className="col-12">
           <div className="form-floating">
             <input
               type="email"
@@ -140,78 +119,6 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
               Email
             </label>
             {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-floating">
-            <input
-              type="tel"
-              className="form-control"
-              id="phone"
-              placeholder="Teléfono"
-              value={form.phone}
-              onChange={(e) => setForm(f => ({ ...f, phone: e.target.value }))}
-              disabled={isLoading}
-            />
-            <label htmlFor="phone" className="text-muted">
-              <FaPhone className="me-2" />
-              Teléfono
-            </label>
-          </div>
-        </div>
-
-        {/* Dirección */}
-        <div className="col-12">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              id="street"
-              placeholder="Dirección"
-              value={form.street}
-              onChange={(e) => setForm(f => ({ ...f, street: e.target.value }))}
-              disabled={isLoading}
-            />
-            <label htmlFor="street" className="text-muted">
-              <FaMapMarkerAlt className="me-2" />
-              Dirección
-            </label>
-          </div>
-        </div>
-
-        {/* Ciudad y Comuna */}
-        <div className="col-md-6">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              id="city"
-              placeholder="Ciudad"
-              value={form.city}
-              onChange={(e) => setForm(f => ({ ...f, city: e.target.value }))}
-              disabled={isLoading}
-            />
-            <label htmlFor="city" className="text-muted">
-              <FaCity className="me-2" />
-              Ciudad
-            </label>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              id="commune"
-              placeholder="Comuna"
-              value={form.commune}
-              onChange={(e) => setForm(f => ({ ...f, commune: e.target.value }))}
-              disabled={isLoading}
-            />
-            <label htmlFor="commune" className="text-muted">
-              <FaMapMarkerAlt className="me-2" />
-              Comuna
-            </label>
           </div>
         </div>
 

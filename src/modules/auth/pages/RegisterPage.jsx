@@ -34,27 +34,27 @@ export default function RegisterPage() {
       <div className="row min-vh-100">
         {/* Left Side - Hero Content */}
         <div className="col-lg-6 d-none d-lg-flex align-items-center justify-content-center p-5" style={{ 
-          background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' 
+          background: 'linear-gradient(135deg, #70d187ff 0%, #704f89ff 100%)' 
         }}>
           <div className="text-center text-white">
             <div className="mb-4">
-              <i className="fas fa-user-plus" style={{ fontSize: '120px', opacity: 0.9 }}></i>
+              <i className="fas fa-users" style={{ fontSize: '120px', opacity: 0.9 }}></i>
             </div>
             
-            <h2 className="display-4 fw-bold mb-4">¡Únete a nosotros!</h2>
+            <h2 className="display-4 fw-bold mb-4">¡Bienvenido a Health Mood!</h2>
             <p className="lead mb-4 opacity-75">
-              Crea tu cuenta y disfruta de beneficios exclusivos, descuentos especiales y una experiencia de compra personalizada.
+              ¡Comparte, aprende y crece junto a otras familias que aman a sus animales como tú!
             </p>
 
             {/* Benefits */}
             <div className="row g-4 mt-5">
-              <div className="col-md-6">
+              <div className="col-md-12">
                 <div className="text-center">
                   <div className="bg-white bg-opacity-25 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
-                    <i className="fas fa-gift text-white fs-4"></i>
+                    <i className="fas fa-hands-helping text-white fs-4"></i>
                   </div>
-                  <h5 className="fw-bold mb-2">Ofertas Exclusivas</h5>
-                  <p className="small opacity-75 mb-0">Descuentos especiales solo para miembros registrados</p>
+                  <h5 className="fw-bold mb-2">Asesoría a tu medida</h5>
+                  <p className="small opacity-75 mb-0">Consejos y recomendaciones específicas para tu familia multiespecie</p>
                 </div>
               </div>
               
@@ -63,28 +63,17 @@ export default function RegisterPage() {
                   <div className="bg-white bg-opacity-25 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
                     <i className="fas fa-shipping-fast text-white fs-4"></i>
                   </div>
-                  <h5 className="fw-bold mb-2">Envío Gratuito</h5>
-                  <p className="small opacity-75 mb-0">Disfruta de envíos gratis en compras superiores a $50</p>
+                  <h5 className="fw-bold mb-2">Envío Seguro</h5>
+                  <p className="small opacity-75 mb-0">Entrega en menos de 24 horas en la región metropolitana</p>
                 </div>
-              </div>
-              
+              </div>  
               <div className="col-md-6">
                 <div className="text-center">
                   <div className="bg-white bg-opacity-25 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
                     <i className="fas fa-heart text-white fs-4"></i>
                   </div>
-                  <h5 className="fw-bold mb-2">Lista de Deseos</h5>
-                  <p className="small opacity-75 mb-0">Guarda tus productos favoritos para comprar después</p>
-                </div>
-              </div>
-              
-              <div className="col-md-6">
-                <div className="text-center">
-                  <div className="bg-white bg-opacity-25 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
-                    <i className="fas fa-headset text-white fs-4"></i>
-                  </div>
-                  <h5 className="fw-bold mb-2">Soporte 24/7</h5>
-                  <p className="small opacity-75 mb-0">Atención personalizada cuando lo necesites</p>
+                  <h5 className="fw-bold mb-2">Contenido excluvio</h5>
+                  <p className="small opacity-75 mb-0">Accede a guías, tips y consejos de bienestar animal creados por veterinarios</p>
                 </div>
               </div>
             </div>
@@ -107,7 +96,7 @@ export default function RegisterPage() {
                 </div>
               </div>
               <p className="small opacity-75 fst-italic mb-0">
-                "Excelente experiencia desde el registro. Las ofertas exclusivas realmente valen la pena y el soporte es increíble."
+                "Excelente experiencia desde el principio. Es como sentirse en familia."
               </p>
             </div>
           </div>
@@ -122,17 +111,27 @@ export default function RegisterPage() {
               <div className="mb-3">
                 <i className="fas fa-store text-success" style={{ fontSize: '48px' }}></i>
               </div>
-              <h3 className="text-success fw-bold mb-2">¡Únete a nosotros!</h3>
-              <p className="text-muted">Crea tu cuenta y disfruta de todos nuestros beneficios</p>
+              <h3 className="text-success fw-bold mb-2">¡Únete a la manada!</h3>
+              <p className="text-muted">Tu familia, nuestra manada</p>
             </div>
 
             {/* Desktop Header */}
             <div className="text-center mb-5 d-none d-lg-block">
-              <div className="mb-4">
-                <i className="fas fa-store text-success" style={{ fontSize: '64px' }}></i>
+              <div className="mb-4 d-flex align-items-center justify-content-center">
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  borderRadius: '50%',
+                  background: '#5706ad',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <i className="fas fa-paw" style={{ fontSize: '48px', color: 'white' }}></i>
+                </div>
               </div>
-              <h2 className="text-dark fw-bold mb-2">Crear Cuenta</h2>
-              <p className="text-muted fs-5">Únete a nuestra comunidad hoy mismo</p>
+              <h2 className="text-dark fw-bold mb-2">¡Únete a la manada!</h2>
+              <p className="text-muted fs-5">Tu familia, nuestra manada</p>
             </div>
 
             {/* Toast Notification */}
