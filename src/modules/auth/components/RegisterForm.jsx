@@ -187,7 +187,7 @@ export default function RegisterForm({ onSubmit, submitText = 'Registrarse' }) {
       <div className="d-grid mt-4">
         <button 
           type="submit" 
-          className="btn btn-lg py-3"
+          className="btn btn-lg py-3 btn-morado-outline"
           disabled={!isFormValid || isLoading}
           style={{
             background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',

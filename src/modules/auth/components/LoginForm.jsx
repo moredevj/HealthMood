@@ -114,11 +114,16 @@ export default function LoginForm({ onSubmit, submitText = 'Entrar' }) {
       </div>
 
       {/* Submit Button */}
-      <div className="d-grid mb-3">
+       <div className="d-grid mt-4">
         <button 
           type="submit" 
-          className="btn btn-primary btn-lg rounded-3 fw-medium py-3 position-relative overflow-hidden"
+          className="btn btn-lg py-3 btn-morado-outline"
           disabled={!isFormValid || isLoading}
+          style={{
+            background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+            color: 'white',
+            borderRadius: '50px',
+          }}
         >
           {isLoading ? (
             <>
@@ -133,15 +138,6 @@ export default function LoginForm({ onSubmit, submitText = 'Entrar' }) {
               {submitText}
             </>
           )}
-          
-          {/* Button shine effect */}
-          <div 
-            className="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-20 d-none"
-            style={{ 
-              background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent)',
-              transform: 'translateX(-100%)'
-            }}
-          />
         </button>
       </div>
 
