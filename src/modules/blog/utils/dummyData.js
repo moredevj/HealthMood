@@ -96,7 +96,7 @@ export const MOCK_POSTS = [
     summary: "Aprende a reconocer las señales de estrés en tu mascota y descubre estrategias efectivas para ayudarles a mantener el equilibrio emocional.",
     author: "Dr. Pablo Martínez",
     publishedDate: "2025-08-12",
-    imageUrl: "https://images.unsplash.com/photo-1594005374167-5fd900fb82e1",
+    imageUrl: "https://hablemosdemascotas.info/wp-content/uploads/2023/09/7-Senales-de-Estres-en-Perros-Que-Podrias-no-Ver.jpg",
     comments: []
   },
   {
@@ -120,7 +120,7 @@ export const MOCK_POSTS = [
     summary: "Explora cómo el enriquecimiento ambiental puede mejorar la vida de tu mascota y mantenerla mentalmente activa y feliz.",
     author: "Dra. Laura Sánchez",
     publishedDate: "2025-08-11",
-    imageUrl: "https://images.unsplash.com/photo-1585837073804-6d5f005a6b65",
+    imageUrl: "https://img.freepik.com/fotos-premium/um-gato-correndo-na-grama-com-um-fundo-desfocado_871710-13990.jpg",
     comments: []
   }
 ];
