@@ -6,7 +6,7 @@ export const products = [
         description: "Alimento balanceado con ingredientes naturales.",
         rating: 4.8,
         price: 29990,
-        category: "Alimentos",
+        category: ["Alimentos", "Para Perros"],
         image: "https://c.pxhere.com/photos/af/e5/adorable_animal_bernedoodle_bernese_mountain_dog_breed_canine_close_up_cute-1539643.jpg!s"
     },
     {
@@ -15,7 +15,7 @@ export const products = [
         description: "Estimula la actividad física y mental.",
         rating: 4.8,
         price: 12990,
-        category: "Juguetes",
+        category: ["Juguetes", "Para Gatos"],
         image: "https://investasiproperti.id/wp-content/uploads/2023/09/kenapa-kucing-mengeong-terus-800x506.jpg"
     },
     {
@@ -24,26 +24,17 @@ export const products = [
         description: "Fórmula suave para pieles sensibles.",
         rating: 4.8,
         price: 15990,
-        category: "Cuidado",
+        category: ["Cuidado", "Salud e Higiene"],
         image: "https://media.istockphoto.com/id/2144231658/es/foto/retrato-de-perro-un-caniche-feliz-en-el-ba%C3%B1o-ba%C3%B1%C3%A1ndose-con-burbujas-en-la-cabeza.webp?a=1&b=1&s=612x612&w=0&k=20&c=w0btV6nxsYlQ4a6GCRBlbDzkbn9jv4P0wcCwXhYDTwI="
     }
 ];
 
-// Categorías disponibles
+// Categorías disponibles - UNIFICAR NOMBRES
 export const categories = [
-    { id: 'gatos', name: 'Gatos', icon: '' },
-    { id: 'perros', name: 'Perros', icon: '' },
-    { id: 'Alimentos', name: 'Alimentos', icon: '' },
-    { id: 'Juguetes', name: 'Juguetes', icon: '' },
-    { id: 'Cuidado', name: 'Cuidado', icon: '' },
+    { id: 'perros', name: 'Para Perros', icon: '' },
+    { id: 'gatos', name: 'Para Gatos', icon: '' },
+    { id: 'alimento', name: 'Alimento', icon: '' },          // ← Cambiado de "Alimentos" a "Alimento"
+    { id: 'accesorios', name: 'Accesorios', icon: '' },      // ← Cambiado de "Juguetes" a "Accesorios"
+    { id: 'salud e higiene', name: 'Salud e Higiene', icon: '' }, // ← Cambiado de "Cuidado" a "Salud e Higiene"
 ];
 
-// Marcas disponibles
-export const brands = [
-    'Apple',
-    'Samsung',
-    'Dell',
-    'Sony',
-    'Nintendo',
-    'Canon'
-];
