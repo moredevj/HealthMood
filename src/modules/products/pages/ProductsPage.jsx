@@ -1,7 +1,12 @@
+import { useLocation } from 'react-router-dom';
 import ProductList from '../components/ProductList';
 import './ProductsPage.css';
 
 export default function ProductsPage() {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const categoriaInicial = params.get('categoria');
+
   return (
     <div className="products-page">
       {/* Hero Section */}
@@ -14,8 +19,9 @@ export default function ProductsPage() {
           Descubre nuestra colección cuidadosamente seleccionada de productos premium con la mejor calidad y precio.
         </p>
       </div>
-      
-      <ProductList />
+
+      {/* ProductList maneja todo internamente */}
+      <ProductList categoriaInicial={categoriaInicial} />
     </div>
   );
 }
