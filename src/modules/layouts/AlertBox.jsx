@@ -182,7 +182,7 @@ export default function AlertBox({
       </div>
 
       {/* CSS Animation for progress bar */}
-      <style jsx>{`
+  <style>{`
         @keyframes shrink {
           from { width: 100%; }
           to { width: 0%; }
