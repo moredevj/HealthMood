@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function LoginForm({ onSubmit, submitText = 'Entrar' }) {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -11,12 +11,12 @@ export default function LoginForm({ onSubmit, submitText = 'Entrar' }) {
     
     // Simulate loading
     setTimeout(() => {
-      onSubmit?.({ username: form.username.trim(), password: form.password });
+      onSubmit?.({ email: form.email, password: form.password });
       setIsLoading(false);
     }, 1000);
   };
 
-  const isFormValid = form.username.trim() && form.password.length >= 4;
+  const isFormValid = form.email.trim() && form.password.length >= 4;
 
   return (
     <form onSubmit={handleSubmit} noValidate className="needs-validation">
@@ -24,17 +24,17 @@ export default function LoginForm({ onSubmit, submitText = 'Entrar' }) {
       <div className="form-floating mb-4">
         <input
           type="text"
-          className={`form-control form-control-lg rounded-3 ${form.username ? 'border-success' : ''}`}
-          id="login_username"
-          placeholder="Usuario"
+          className={`form-control form-control-lg rounded-3 ${form.email ? 'border-success' : ''}`}
+          id="login_email"
+          placeholder="ejemplo@correo.com"
           required
-          value={form.username}
-          onChange={(e) => setForm(f => ({ ...f, username: e.target.value }))}
+          value={form.email}
+          onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
           disabled={isLoading}
         />
-        <label htmlFor="login_username" className="text-muted">
+        <label htmlFor="login_email" className="text-muted">
           <i className="fas fa-user me-2"></i>
-          Usuario
+          Email
         </label>
         {form.username && (
           <div className="position-absolute end-0 top-50 translate-middle-y me-3">

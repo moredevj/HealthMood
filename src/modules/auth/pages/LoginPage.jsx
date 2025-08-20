@@ -10,8 +10,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ show: false, msg: '', variant: 'success' });
 
-  const handleLogin = ({ username, password }) => {
-    const { ok, message } = login(username, password);
+  const handleLogin = ({ email, password }) => {
+    const { ok, message } = login(email, password);
     if (ok) {
       setAlert({ show: true, msg: '¡Ingreso con éxito! 🎉', variant: 'success' });
       setTimeout(() => navigate('/'), 1500);
@@ -79,8 +79,8 @@ export default function LoginPage() {
               <div className="row g-2">
                 <div className="col-sm-6">
                   <small>
-                    <strong>Usuario:</strong>{' '}
-                    <code className="bg-light text-dark px-2 py-1 rounded">demo</code>
+                    <strong>Email:</strong>{' '}
+                    <code className="bg-light text-dark px-2 py-1 rounded">maria@gonzales.cl</code>
                   </small>
                 </div>
                 <div className="col-sm-6">

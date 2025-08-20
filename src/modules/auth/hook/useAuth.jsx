@@ -24,9 +24,9 @@ export function AuthProvider({ children }) {
     readUsers(); // asegura semilla
   }, []);
 
-  const login = (username, password) => {
+  const login = (email, password) => {
     const db = readUsers();
-    const found = db.find(u => u.username === username && u.password === password);
+    const found = db.find(u => u.email === email && u.password === password);
     if (found) {
       sessionStorage.setItem(AUTH_KEY, JSON.stringify(found));
       setUser(found);
@@ -35,12 +35,12 @@ export function AuthProvider({ children }) {
     return { ok: false, message: 'Usuario o contraseña inválidos.' };
   };
 
-  const register = (username, password) => {
+  const register = (email, password) => {
     const db = readUsers();
-    const exists = db.some(u => u.username.toLowerCase() === username.toLowerCase());
+    const exists = db.some(u => u.email.toLowerCase() === email.toLowerCase());
     if (exists) return { ok: false, message: 'El usuario ya existe.' };
 
-    const newUser = { id: Date.now(), username, password };
+    const newUser = { id: Date.now(), email, password };
     const updated = [...db, newUser];
     localStorage.setItem(USERS_KEY, JSON.stringify(updated));
     sessionStorage.setItem(AUTH_KEY, JSON.stringify(newUser));
