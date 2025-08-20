@@ -1,1 +1,14 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+.btn-morado-outline {
+  background: transparent;
+  color: #5706ad;
+  border: 2px solid #5706ad;
+  transition: all 0.2s;
+}
+
+.btn-morado-outline:hover, .btn-morado-outline:focus {
+  background: #5706ad;
+  color: #fff;
+  border-color: #5706ad;
+}

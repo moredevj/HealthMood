@@ -1,50 +1,57 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CategoriaGrid() {
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const navigate = useNavigate();
 
   const categorias = [
     {
       id: 1,
       titulo: 'Para Perros',
+      slug: 'perros',
       imagen: 'https://img.milanuncios.com/fg/3366/59/336659760_3.jpg?VersionId=mWZSDP5xWKt3qY.jZcQmzs9vYFcdqyvK',
       descripcion: 'Todo para tu mejor amigo canino'
     },
     {
       id: 2,
       titulo: 'Para Gatos',
+      slug: 'gatos',
       imagen: 'https://cobasiblog.blob.core.windows.net/production-ofc/2022/07/Gato-pupila-dilatada-768x512.jpg',
       descripcion: 'Productos especiales para felinos'
     },
     {
       id: 3,
       titulo: 'Alimento',
+      slug: 'alimento',
       imagen: 'https://animalcarecentersmyrna.com/wp-content/uploads/2021/04/cat-and-dog-ready-to-eat-1024x784.jpeg',
       descripcion: 'Nutrición de calidad premium'
     },
     {
       id: 4,
       titulo: 'Accesorios',
+      slug: 'accesorios',
       imagen: 'https://tse2.mm.bing.net/th/id/OIP.xPr05u9kYmpe4XV01aHJ0AHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
       descripcion: 'Juguetes y accesorios divertidos'
     },
     {
       id: 5,
       titulo: 'Salud e Higiene',
+      slug: 'salud e higiene',
       imagen: 'https://img.freepik.com/foto-gratis/perro-pato-goma-cabeza-banera-generada-ia_268835-10308.jpg',
       descripcion: 'Cuidado y bienestar integral'
     }
   ];
 
   const handleCategoryClick = (categoria) => {
-    console.log('Categoría seleccionada:', categoria.titulo);
-    // Aquí puedes agregar la lógica de navegación o filtrado
-  };
+  // Convertir a formato URL-amigable
+  const slug = categoria.slug.toLowerCase().replace(/\s+/g, '-');
+  navigate(`/products?categoria=${slug}`);
+};
 
   return (
     <section className="py-5 bg-white">
       <div className="container">
-        {/* Header Section */}
         <div className="text-center mb-5">
           <h2 className="h2 fw-bold text-dark mb-3">
             Explora por categorías
@@ -54,7 +61,6 @@ export default function CategoriaGrid() {
           </p>
         </div>
 
-        {/* Categories Grid */}
         <div className="row justify-content-center g-4">
           {categorias.map((categoria) => (
             <div key={categoria.id} className="col-6 col-md-4 col-lg-2">
@@ -65,7 +71,6 @@ export default function CategoriaGrid() {
                 onMouseLeave={() => setHoveredCategory(null)}
                 style={{ cursor: 'pointer' }}
               >
-                {/* Circular Image Container */}
                 <div 
                   className="mx-auto mb-3 position-relative overflow-hidden"
                   style={{
@@ -90,7 +95,6 @@ export default function CategoriaGrid() {
                     }}
                   />
                   
-                  {/* Overlay */}
                   <div 
                     className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                     style={{
@@ -112,7 +116,6 @@ export default function CategoriaGrid() {
                   </div>
                 </div>
 
-                {/* Category Title */}
                 <h4 
                   className="fw-bold mb-2"
                   style={{
@@ -124,7 +127,6 @@ export default function CategoriaGrid() {
                   {categoria.titulo}
                 </h4>
 
-                {/* Category Description */}
                 <p 
                   className="text-muted small mb-0"
                   style={{
@@ -140,7 +142,6 @@ export default function CategoriaGrid() {
           ))}
         </div>
 
-        {/* Call to Action */}
         <div className="text-center mt-5">
           <button 
             className="btn btn-outline-primary px-4 py-3 rounded-3 fw-medium"
@@ -165,7 +166,6 @@ export default function CategoriaGrid() {
         </div>
       </div>
 
-      {/* Custom Styles */}
       <style dangerouslySetInnerHTML={{
         __html: `
           .category-card {
@@ -174,13 +174,6 @@ export default function CategoriaGrid() {
           
           .category-card:hover {
             transform: translateY(-5px);
-          }
-          
-          @media (max-width: 768px) {
-            .category-card .mx-auto {
-              width: 100px !important;
-              height: 100px !important;
-            }
           }
         `
       }} />

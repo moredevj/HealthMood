@@ -34,7 +34,7 @@ export default function RegisterPage() {
       <div className="row min-vh-100">
         {/* Left Side - Hero Content */}
         <div className="col-lg-6 d-none d-lg-flex align-items-center justify-content-center p-5" style={{ 
-          background: 'linear-gradient(135deg, #70d187ff 0%, #704f89ff 100%)' 
+          background: 'linear-gradient(135deg, #70d187ff 0%, #5706ad  100%)' 
         }}>
           <div className="text-center text-white">
             <div className="mb-4">
