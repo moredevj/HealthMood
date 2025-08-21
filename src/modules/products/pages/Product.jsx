@@ -1,23 +1,48 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
-import { products } from '../utils/dummyData';
+import { useState, useEffect } from 'react';
+import { useProduct } from '../../../hooks/useProduct';
 import { useCart } from '../../cart/hooks/useCart';
 import { FaMinus } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
+import SafeImage from '../../../components/SafeImage';
 
 export default function Product() {
   const { id } = useParams();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  // Encuentra el producto por ID
-  const product = products.find(p => p.id === parseInt(id));
+  // Usar el hook para obtener el producto del backend
+  const { product, loading, error, usingMockData } = useProduct(id);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="container py-5">
+        <div className="d-flex justify-content-center align-items-center py-5">
+          <div className="text-center">
+            <div className="spinner-border text-primary mb-3" style={{ width: '3rem', height: '3rem' }} role="status">
+              <span className="visually-hidden">Cargando producto...</span>
+            </div>
+            <p className="text-muted">Cargando información del producto...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product || error) {
     return (
       <div className="container py-5">
         <div className="alert alert-warning">
-          Producto no encontrado
+          <h4>Producto no encontrado</h4>
+          <p>El producto con ID {id} no existe o no se pudo cargar.</p>
+          {error && <p><strong>Error:</strong> {error}</p>}
+          
+          <button 
+            className="btn btn-secondary mt-2"
+            onClick={() => window.history.back()}
+          >
+            ← Volver
+          </button>
         </div>
       </div>
     );
@@ -28,7 +53,7 @@ export default function Product() {
       <div className="card border-0 shadow-sm">
         <div className="row g-0">
           <div className="col-md-6">
-            <img 
+            <SafeImage 
               src={product.image} 
               alt={product.name}
               className="img-fluid rounded-start" 

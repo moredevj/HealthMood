@@ -1,27 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../../cart/hooks/useCart';
-import { MOCK } from '../utils/dummyData.js';
-import CategoriaGrid from './CategoriaGrid'; // Importa el componente
+import { useProducts } from '../../../hooks/useProducts';
+import CategoriaGrid from './CategoriaGrid';
+import SafeImage from '../../../components/SafeImage';
 
 export default function Main() {
-  const [products, setProducts] = useState(MOCK);
   const [favorites, setFavorites] = useState(new Set());
-  const [isLoading, setIsLoading] = useState(true);
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
 
-  // Simulate loading
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  // Usar el hook personalizado para obtener productos
+  const { products, loading: isLoading, error, isUsingFallback, isAuthenticated } = useProducts();
 
   // Get unique categories from products
-  const categories = ['all', ...new Set(products.map(p => p.category || 'general'))];
+  const categories = ['all', ...new Set(products.map(p => p.category || 'sin-categoria').filter(Boolean))];
 
   // Filter and sort products
   const filteredAndSortedProducts = products
-    .filter(product => filterCategory === 'all' || (product.category || 'general') === filterCategory)
+    .filter(product => filterCategory === 'all' || (product.category || 'sin-categoria') === filterCategory)
     .sort((a, b) => {
       switch (sortBy) {
         case 'price-asc':
@@ -84,7 +80,9 @@ export default function Main() {
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
-                  {cat === 'all' ? 'Todas las categorías' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  {cat === 'all' ? 'Todas las categorías' : 
+                   cat === 'sin-categoria' ? 'Sin categoría' :
+                   cat.charAt(0).toUpperCase() + cat.slice(1)}
                 </option>
               ))}
             </select>
@@ -106,7 +104,7 @@ export default function Main() {
               >
                 {/* Product Image */}
                 <div className="position-relative">
-                  <img 
+                  <SafeImage 
                     src={product.image} 
                     className="card-img-top" 
                     alt={product.name}
@@ -115,6 +113,12 @@ export default function Main() {
                       objectFit: 'cover'
                     }}
                   />
+                  {/* Badge de origen */}
+                  <div className="position-absolute top-0 end-0 m-2">
+                    <span className={`badge ${isUsingFallback ? 'bg-warning' : 'bg-success'}`}>
+                      {isUsingFallback ? 'Mock' : 'Backend'}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Product Info */}
@@ -139,8 +143,13 @@ export default function Main() {
                     {/* Price */}
                     <div className="mb-3">
                       <span className="h5 text-primary mb-0">
-                        ${product.price.toLocaleString('es-CL')}
+                        ${typeof product.price === 'number' ? product.price.toLocaleString('es-CL') : (product.price || '0')}
                       </span>
+                      {product.stock !== undefined && (
+                        <small className="text-muted ms-2">
+                          Stock: {product.stock}
+                        </small>
+                      )}
                     </div>
                   </div>
 
