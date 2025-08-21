@@ -1,4 +1,5 @@
 import { useCart } from '../hooks/useCart';
+import SafeImage from '../../../components/SafeImage';
 import { useState } from 'react';
 
 export default function CartPage() {
@@ -79,8 +80,8 @@ export default function CartPage() {
                   <div className="row align-items-center">
                     <div className="col-md-3">
                       <div className="position-relative">
-                        <img 
-                          src={item.image || 'https://via.placeholder.com/300x200'} 
+                        <SafeImage 
+                          src={item.image} 
                           className="img-fluid rounded-3 object-fit-cover w-100" 
                           alt={item.name}
                           style={{ height: '120px' }}

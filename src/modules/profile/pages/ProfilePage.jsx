@@ -1,16 +1,59 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../auth/hook/useAuth';
 import '../components/UserProfile.css';
 
 const UserProfile = () => {
+  const { user, isAuthenticated } = useAuth();
   const [activeSubTab, setActiveSubTab] = useState('RESUMEN');
+
+  // Si no está autenticado, mostrar mensaje o redireccionar
+  if (!isAuthenticated) {
+    return (
+      <div className="container-fluid px-4 py-4">
+        <div className="alert alert-warning text-center">
+          <h4>Acceso Restringido</h4>
+          <p>Debes iniciar sesión para ver tu perfil.</p>
+          <a href="/login" className="btn btn-primary">Iniciar Sesión</a>
+        </div>
+      </div>
+    );
+  }
+  
+  // Usar datos del usuario autenticado o valores por defecto
+  const getUserDisplayName = () => {
+    if (!user) return 'Usuario';
+    
+    // Prioridad: firstName + lastName > name > email
+    if (user.firstName && user.lastName) {
+      return `${user.firstName} ${user.lastName}`;
+    }
+    if (user.name) {
+      return user.name;
+    }
+    if (user.email) {
+      return user.email.split('@')[0]; // Usar la parte antes del @
+    }
+    return 'Usuario';
+  };
+
+  const getFirstName = () => {
+    const fullName = getUserDisplayName();
+    return fullName.split(' ')[0];
+  };
+
   const [userData] = useState({
-    name: 'María González',
-    profileImage: 'src/assets/maria.jpg', // Imagen de perfil de María
     members: 3,
     status: 'Excelente',
     pendingTasks: 1,
     registeredMembers: 2
   });
+
+  // Datos del usuario calculados dinámicamente
+  const userProfileData = {
+    name: getUserDisplayName(),
+    profileImage: user?.profileImage || 'src/assets/maria.jpg',
+    ...userData
+  };
 
   const [familyMembers] = useState([
     {
@@ -103,15 +146,15 @@ const UserProfile = () => {
         {/* Welcome Section */}
         <section className="welcome-section">
           <div className="welcome-text">
-            <h1>¡Hola, {userData.name.split(' ')[0]}!</h1>
-            <p>Tu manada te espera. Tienes {userData.registeredMembers} miembros registrados</p>
+            <h1>¡Hola, {getFirstName()}!</h1>
+            <p>Tu manada te espera. Tienes {userProfileData.registeredMembers} miembros registrados</p>
           </div>
           <div className="user-avatar">
             <img 
-              src={userData.profileImage} 
-              alt={userData.name}
+              src={userProfileData.profileImage} 
+              alt={userProfileData.name}
               onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/80x80/ffffff/7c3aed?text=' + userData.name.charAt(0);
+                e.target.src = 'https://via.placeholder.com/80x80/ffffff/7c3aed?text=' + userProfileData.name.charAt(0);
               }}
             />
           </div>
@@ -121,15 +164,15 @@ const UserProfile = () => {
         <section className="stats-section">
           <div className="stats-grid">
             <div className="stat-item">
-              <h3>{userData.members}</h3>
+              <h3>{userProfileData.members}</h3>
               <p>Miembros</p>
             </div>
             <div className="stat-item">
-              <h3>{userData.status}</h3>
+              <h3>{userProfileData.status}</h3>
               <p>Estado general</p>
             </div>
             <div className="stat-item">
-              <h3 className="stat-pending">{userData.pendingTasks} Pendiente</h3>
+              <h3 className="stat-pending">{userProfileData.pendingTasks} Pendiente</h3>
               <p>Próxima compra</p>
             </div>
           </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { products, categories } from '../utils/dummyData';
 import { useCart } from '../../cart/hooks/useCart';
+import { useProducts } from '../../../hooks/useProducts';
+import SafeImage from '../../../components/SafeImage';
 import './ProductList.css';
 
 // Mapeo COMPLETO y CORREGIDO
@@ -37,6 +38,9 @@ const categoryMapping = {
 
 export default function ProductList({ categoriaInicial }) {
   const { addToCart } = useCart();
+  
+  // Usar el hook para obtener productos del backend
+  const { products, loading, error, isUsingFallback } = useProducts();
 
   // Estados para filtros y paginación
   const [search, setSearch] = useState('');
@@ -44,33 +48,25 @@ export default function ProductList({ categoriaInicial }) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
 
-  // DEBUG: Ver qué categoría llega
-  useEffect(() => {
-    console.log('📍DEBUG:');
-    console.log('categoriaInicial:', categoriaInicial);
-    console.log('Category mapping:', categoryMapping);
-    console.log('Todos los productos:', products.map(p => ({
-      name: p.name,
-      categories: p.category
-    })));
-  }, [categoriaInicial]);
+  // Obtener categorías únicas de los productos
+  const categories = ['', ...new Set(products.map(p => p.category).filter(Boolean))];
 
-  // Sincronizar categoría inicial desde URL
+  // Inicializar categoría desde prop
   useEffect(() => {
     if (categoriaInicial) {
-      setCategory(categoriaInicial);
+      const mappedCategory = categoryMapping[categoriaInicial.toLowerCase()] || categoriaInicial;
+      setCategory(mappedCategory);
     }
   }, [categoriaInicial]);
 
-  // Función para normalizar categorías - CORREGIDA
+  // Función para normalizar categorías
   const normalizeCategory = (cat) => {
     if (!cat) return '';
     
     try {
-      // 1. Decodificar URL encoding (%20, %2C, etc.)
+      // Decodificar URL encoding (%20, %2C, etc.)
       const decodedCat = decodeURIComponent(cat.toString());
       const lowerCat = decodedCat.toLowerCase().trim();
-      
       return categoryMapping[lowerCat] || lowerCat;
     } catch (error) {
       console.warn('Error normalizando categoría:', cat, error);
@@ -78,29 +74,20 @@ export default function ProductList({ categoriaInicial }) {
     }
   };
 
-  // Filtrado optimizado - CORREGIDO
+  // Filtrado de productos
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
     
     // Si no hay categoría seleccionada, mostrar todos
     if (category === '') return matchesSearch;
     
-    // DEBUG: Ver qué se está comparando
-    console.log('🔍 FILTRO ACTIVO:');
-    console.log('Categoría seleccionada:', category);
-    console.log('Categoría normalizada:', normalizeCategory(category));
+    // Si el producto no tiene categorías, no coincide
+    if (!product.category) return false;
     
-    // Verificar si alguna categoría del producto coincide con la seleccionada
-    const matchesCategory = product.category.some(productCat => {
-      const normalizedProductCat = normalizeCategory(productCat);
-      const normalizedFilterCat = normalizeCategory(category);
-      
-      console.log('Comparando:', normalizedProductCat, '===', normalizedFilterCat, 'Resultado:', normalizedProductCat === normalizedFilterCat);
-      
-      return normalizedProductCat === normalizedFilterCat;
-    });
-    
-    console.log('Producto', product.name, 'coincide:', matchesCategory);
+    // El backend envía category como string, no como array
+    const normalizedProductCat = normalizeCategory(product.category);
+    const normalizedFilterCat = normalizeCategory(category);
+    const matchesCategory = normalizedProductCat === normalizedFilterCat;
     
     return matchesSearch && matchesCategory;
   });
@@ -114,8 +101,41 @@ export default function ProductList({ categoriaInicial }) {
     setPage(1);
   }, [search, category, limit]);
 
+  // Mostrar loading
+  if (loading) {
+    return (
+      <div className="container-fluid px-4 py-4">
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando productos...</span>
+          </div>
+          <p className="mt-3">Cargando productos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Mostrar error (si no hay fallback)
+  if (error && !isUsingFallback) {
+    return (
+      <div className="container-fluid px-4 py-4">
+        <div className="alert alert-danger text-center">
+          <h4>Error al cargar productos</h4>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container-fluid px-4 py-4">
+      {/* Mostrar aviso si está usando datos de fallback */}
+      {isUsingFallback && (
+        <div className="alert alert-warning">
+          <i className="fas fa-exclamation-triangle me-2"></i>
+          Mostrando datos de ejemplo. No se pudo conectar con el servidor.
+        </div>
+      )}
       {/* Barra de búsqueda */}
       <div className="row mb-4">
         <div className="col-12">
@@ -171,9 +191,9 @@ export default function ProductList({ categoriaInicial }) {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">🏷️ Todas las categorías</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.icon} {cat.name}
+                {categories.filter(cat => cat !== '').map(cat => (
+                  <option key={cat} value={cat}>
+                    {cat}
                   </option>
                 ))}
               </select>
@@ -224,7 +244,7 @@ export default function ProductList({ categoriaInicial }) {
                         
                         {/* Imagen del producto */}
                         <div className="position-relative overflow-hidden" style={{ height: '200px' }}>
-                          <img 
+                          <SafeImage 
                             src={product.image} 
                             alt={product.name}
                             className="w-100 h-100 object-fit-cover"
@@ -238,7 +258,7 @@ export default function ProductList({ categoriaInicial }) {
                           {/* Categoría */}
                           <div className="mb-2">
                             <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
-                              {product.category.join(' • ')}
+                              {product.category}
                             </span>
                           </div>
 

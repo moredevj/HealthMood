@@ -10,13 +10,29 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ show: false, msg: '', variant: 'success' });
 
-  const handleLogin = ({ email, password }) => {
-    const { ok, message } = login(email, password);
-    if (ok) {
-      setAlert({ show: true, msg: '¡Ingreso con éxito! 🎉', variant: 'success' });
-      setTimeout(() => navigate('/'), 1500);
-    } else {
-      setAlert({ show: true, msg: message || 'Credenciales incorrectas. Inténtalo nuevamente.', variant: 'danger' });
+  const handleLogin = async ({ email, password }) => {
+    try {
+      console.log('🔐 LoginPage: Iniciando proceso de login...');
+      const result = await login(email, password);
+      console.log('📥 LoginPage: Resultado del login:', result);
+      
+      if (result.ok) {
+        setAlert({ show: true, msg: '¡Ingreso con éxito! 🎉', variant: 'success' });
+        setTimeout(() => navigate('/'), 1500);
+      } else {
+        setAlert({ 
+          show: true, 
+          msg: result.message || 'Credenciales incorrectas. Inténtalo nuevamente.', 
+          variant: 'danger' 
+        });
+      }
+    } catch (error) {
+      console.error('❌ LoginPage: Error en handleLogin:', error);
+      setAlert({ 
+        show: true, 
+        msg: 'Error al procesar el login. Inténtalo nuevamente.', 
+        variant: 'danger' 
+      });
     }
   };
 

@@ -28,57 +28,80 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       // Intentar login con backend usando Axios
-      console.log('🔐 Intentando login con:', email);
+      console.log('🔐 useAuth: Intentando login con backend...');
       const response = await apiService.login({ email, password });
-      console.log('✅ Respuesta de login:', response);
+      console.log('📦 useAuth: Respuesta completa del backend:', response);
       
-      if (response && (response.user || response.customer || response.token)) {
-        // Manejar diferentes estructuras de respuesta del backend
-        const userData = response.user || response.customer || { 
+      // Verificar múltiples estructuras de respuesta
+      const responseData = response.data || response;
+      const token = responseData.token || responseData.accessToken || responseData.jwt || response.token;
+      const user = responseData.user || responseData.customer || responseData;
+      
+      console.log('🔍 useAuth: Token extraído:', token ? 'PRESENTE' : 'AUSENTE');
+      console.log('🔍 useAuth: Usuario extraído:', user);
+      
+      if (token || user || response.status === 200) {
+        // Construir userData con la información disponible
+        const userData = user && typeof user === 'object' ? user : { 
           email, 
-          token: response.token,
-          firstName: response.firstName,
-          lastName: response.lastName 
+          token,
+          firstName: responseData.firstName || user?.firstName,
+          lastName: responseData.lastName || user?.lastName,
+          id: responseData.id || user?.id
         };
         
-        // Verificar que el token esté en localStorage
-        const savedToken = localStorage.getItem('authToken');
-        console.log('🔑 Token verificado en localStorage:', savedToken ? 'PRESENTE' : 'AUSENTE');
+        // Guardar token si existe
+        if (token) {
+          localStorage.setItem('authToken', token);
+          console.log('� useAuth: Token guardado en localStorage');
+        }
         
+        // Guardar usuario en sesión
         sessionStorage.setItem(AUTH_KEY, JSON.stringify(userData));
         setUser(userData);
-        console.log('✅ Usuario autenticado y guardado:', userData);
+        console.log('✅ useAuth: Usuario autenticado exitosamente:', userData);
         
-        // Forzar re-render para que los hooks detecten la autenticación
+        // Disparar evento de autenticación
         setTimeout(() => {
-          console.log('🔄 Forzando actualización de productos...');
-          console.log('📢 Disparando evento auth-changed...');
-          const event = new CustomEvent('auth-changed', { detail: { user: userData, token: localStorage.getItem('authToken') } });
+          const event = new CustomEvent('auth-changed', { 
+            detail: { user: userData, token: token || localStorage.getItem('authToken') } 
+          });
           window.dispatchEvent(event);
         }, 100);
         
         return { ok: true, user: userData };
+      } else {
+        console.warn('⚠️ useAuth: Respuesta del backend sin token ni usuario válidos');
+        return { ok: false, message: 'Respuesta del servidor inválida.' };
       }
     } catch (error) {
-      console.warn('❌ Backend login failed:', error.message);
+      console.error('❌ useAuth: Error en login:', error);
       
-      // Si es error de autenticación (401, 403), no usar fallback
-      if (error.message.includes('401') || error.message.includes('403') || 
-          error.message.includes('Unauthorized') || error.message.includes('Invalid credentials')) {
-        return { ok: false, message: 'Credenciales inválidas. Verifica tu email y contraseña.' };
+      // Si es error de autenticación específico (401, 403)
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        return { 
+          ok: false, 
+          message: 'Credenciales incorrectas. Verifica tu email y contraseña.' 
+        };
       }
       
-      // Fallback a autenticación local solo si es error de conexión
-      console.log('🔄 Usando autenticación local como fallback...');
-      const db = readUsers();
-      const found = db.find(u => u.email === email && u.password === password);
-      if (found) {
-        sessionStorage.setItem(AUTH_KEY, JSON.stringify(found));
-        setUser(found);
-        return { ok: true, user: found };
+      // Si es error de conexión, usar fallback local
+      if (!error.response) {
+        console.log('🔄 useAuth: Error de conexión, usando autenticación local...');
+        const db = readUsers();
+        const found = db.find(u => u.email === email && u.password === password);
+        if (found) {
+          sessionStorage.setItem(AUTH_KEY, JSON.stringify(found));
+          setUser(found);
+          return { ok: true, user: found };
+        }
       }
+      
+      return { 
+        ok: false, 
+        message: error.response?.data?.message || error.message || 'Error de conexión.' 
+      };
     }
-    return { ok: false, message: 'Usuario o contraseña inválidos.' };
   };
 
   const register = async (email, password) => {
