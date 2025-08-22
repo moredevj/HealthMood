@@ -26,10 +26,18 @@ export const useProduct = (productId) => {
         const response = await apiService.getProduct(productId);
         
         // Transformar la estructura del backend
-        // Extraer la primera imagen del array de imágenes
-        let imageUrl = null;
+        // Procesar todas las imágenes del array
+        let images = [];
+        let primaryImage = null;
+        
         if (response.images && Array.isArray(response.images) && response.images.length > 0) {
-          imageUrl = response.images[0].imageUrl || response.images[0].url || response.images[0].src;
+          images = response.images.map(img => ({
+            id: img.imageId || img.id || Math.random(),
+            url: img.imageUrl || img.url || img.src,
+            alt: img.alt || response.name || 'Imagen del producto'
+          }));
+          // Usar la primera imagen como imagen principal por compatibilidad
+          primaryImage = images[0]?.url;
         }
 
         const transformedProduct = {
@@ -39,8 +47,10 @@ export const useProduct = (productId) => {
           price: response.price || 0,
           // Extraer nombre de categoría del objeto
           category: response.category?.name || String(response.category || 'Sin categoría'),
-          // Extraer primera imagen del array
-          image: imageUrl,
+          // Mantener imagen principal por compatibilidad
+          image: primaryImage,
+          // Agregar todas las imágenes
+          images: images,
           stock: response.stock !== undefined ? response.stock : 10,
           active: response.active !== undefined ? response.active : true
         };

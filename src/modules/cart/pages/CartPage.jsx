@@ -1,11 +1,33 @@
 import { useCart } from '../hooks/useCart';
 import SafeImage from '../../../components/SafeImage';
 import { useState } from 'react';
+import { useAuth } from '../../auth/hook/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export default function CartPage() {
   const { items, removeFromCart, subtotal, shipping, total, increaseQuantity, decreaseQuantity } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [promoCode, setPromoCode] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [showCheckoutImage, setShowCheckoutImage] = useState(false);
+
+  // Imagen base64 - REEMPLAZA ESTA CON TU IMAGEN REAL DE GOOGLE DRIVE
+  // Para convertir tu imagen:
+  // 1. Haz tu imagen pública en Google Drive
+  // 2. Usa este enlace: https://drive.google.com/uc?export=view&id=1vkBiSUujkjIZeLI4MRBGBkRdXTA_Izot
+  // 3. Descarga la imagen y conviértela a base64 en: https://www.base64-image.de/
+  const checkoutImageBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzgwNjFjNSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNTcwNmFkIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2JnKSIgcng9IjIwIi8+Cjx0ZXh0IHg9IjMwMCIgeT0iMTIwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+OiSBQcm9jZXNhbmRvIFBhZ28uLi4g8J+OiTwvdGV4dD4KPGNpcmNsZSBjeD0iMzAwIiBjeT0iMjAwIiByPSI0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSI0IiBvcGFjaXR5PSIwLjgiPgo8YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIGF0dHJpYnV0ZVR5cGU9IlhNTCIgdHlwZT0icm90YXRlIiBmcm9tPSIwIDMwMCAyMDAiIHRvPSIzNjAgMzAwIDIwMCIgZHVyPSIycyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz4KPC9jaXJjbGU+Cjx0ZXh0IHg9IjMwMCIgeT0iMjgwIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxOCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBvcGFjaXR5PSIwLjkiPkVzdGFtb3MgcHJvY2VzYW5kbyB0dSBwYWdvIGRlIGZvcm1hIHNlZ3VyYTwvdGV4dD4KPHRleHQgeD0iMzAwIiB5PSIzMTAiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjE0IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIG9wYWNpdHk9IjAuNyI+8J+UkiBDb21wcmEgMTAwJSBzZWd1cmE8L3RleHQ+Cjwvc3ZnPg==";
+
+  const handleCheckout = () => {
+    if (!isAuthenticated) {
+      // Si no está autenticado, redirigir a login
+      navigate('/login');
+    } else {
+      // Si está autenticado, mostrar la imagen
+      setShowCheckoutImage(true);
+    }
+  };
 
   const handlePromoCode = () => {
     if (promoCode.toLowerCase() === 'descuento10') {
@@ -273,7 +295,7 @@ export default function CartPage() {
                   <div className="d-grid mb-3" style={{ background: '#8061c5' }}>
                     <button 
                       className="btn btn-lg rounded-pill fw-bold py-3 text-white"
-                      onClick={() => window.location.href = "https://mystickermania.com/cdn/stickers/memes/bugs-bunny-not-bad-meme-512x512.png"}
+                      onClick={handleCheckout}
                     >
                       <i className="fas fa-credit-card me-2" ></i>
                       Proceder al pago
@@ -330,6 +352,62 @@ export default function CartPage() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para mostrar imagen de checkout */}
+      {showCheckoutImage && (
+        <div 
+          className="modal fade show d-block" 
+          style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+          onClick={() => setShowCheckoutImage(false)}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content border-0 shadow-lg">
+              <div className="modal-header border-0 pb-0">
+                <h5 className="modal-title fw-bold" style={{ color: '#8061c5' }}>
+                  <i className="fas fa-credit-card me-2"></i>
+                  Procesando Pago
+                </h5>
+                <button 
+                  type="button" 
+                  className="btn-close" 
+                  onClick={() => setShowCheckoutImage(false)}
+                ></button>
+              </div>
+              <div className="modal-body text-center p-4">
+                <img 
+                  src={checkoutImageBase64} 
+                  alt="Procesando pago" 
+                  className="img-fluid rounded-3 shadow-sm"
+                  style={{ maxHeight: '400px', width: '100%', objectFit: 'contain' }}
+                />
+                <div className="mt-4">
+                  <p className="text-muted mb-3">
+                    Tu pago está siendo procesado de forma segura
+                  </p>
+                  <div className="d-flex justify-content-center gap-2">
+                    <button 
+                      className="btn btn-outline-secondary rounded-pill"
+                      onClick={() => setShowCheckoutImage(false)}
+                    >
+                      Cerrar
+                    </button>
+                    <button 
+                      className="btn rounded-pill text-white"
+                      style={{ background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)' }}
+                      onClick={() => {
+                        setShowCheckoutImage(false);
+                        // Aquí puedes agregar lógica adicional como limpiar el carrito
+                      }}
+                    >
+                      Continuar
+                    </button>
                   </div>
                 </div>
               </div>

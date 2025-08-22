@@ -5,6 +5,7 @@ import { useCart } from '../../cart/hooks/useCart';
 import { FaMinus } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import SafeImage from '../../../components/SafeImage';
+import ImageGallery from '../../../components/ImageGallery';
 
 export default function Product() {
   const { id } = useParams();
@@ -53,12 +54,12 @@ export default function Product() {
       <div className="card border-0 shadow-sm">
         <div className="row g-0">
           <div className="col-md-6">
-            <SafeImage 
-              src={product.image} 
-              alt={product.name}
-              className="img-fluid rounded-start" 
-              style={{ objectFit: 'cover', height: '100%', width: '100%' }}
-            />
+            <div className="p-3">
+              <ImageGallery 
+                images={product.images || []} 
+                productName={product.name}
+              />
+            </div>
           </div>
           <div className="col-md-6">
             <div className="card-body p-4">
