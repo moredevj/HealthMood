@@ -2,6 +2,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/hook/useAuth';
 import CartIcon from '../cart/components/CartIcon';
+import logoImg from '../../assets/logo.png';
 import {
   FaUser,
   FaSignInAlt,
@@ -89,27 +90,18 @@ export default function Navbar() {
         <div className="container">
           {/* Enhanced Brand */}
           <Link className="navbar-brand" to="/">
-            <picture>
-              <source srcSet="/logo.png" type="image/png" />
-              <img 
-                src="/logo.png" 
-                alt="HealthMood Logo" 
-                style={{ height: '60px', maxWidth: '200px' }}
-                loading="eager"
-                onError={(e) => {
-                  console.error('Error loading logo from /logo.png');
-                  // Fallback: intentar cargar desde vite.svg como prueba
-                  if (e.target.src.includes('logo.png')) {
-                    e.target.src = '/vite.svg';
-                  } else {
-                    // Si también falla vite.svg, mostrar texto
-                    e.target.style.display = 'none';
-                    e.target.parentElement.querySelector('#fallback-text').style.display = 'inline';
-                  }
-                }}
-                onLoad={() => console.log('Logo loaded successfully from:', '/logo.png')}
-              />
-            </picture>
+            <img 
+              src={logoImg} 
+              alt="HealthMood Logo" 
+              style={{ height: '60px', maxWidth: '200px' }}
+              loading="eager"
+              onError={(e) => {
+                console.error('Error loading logo');
+                e.target.style.display = 'none';
+                e.target.parentElement.querySelector('#fallback-text').style.display = 'inline';
+              }}
+              onLoad={() => console.log('Logo loaded successfully')}
+            />
             <span 
               className="fw-bold text-primary" 
               id="fallback-text"

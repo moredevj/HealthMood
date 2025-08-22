@@ -1,4 +1,5 @@
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import logoImg from '../../assets/logo.png';
 import './Footer.css';
 
 export default function Footer() {
@@ -9,7 +10,7 @@ export default function Footer() {
           <div className="col-12 col-md-3">
             <div className="mb-4">
               <img 
-                src="/logo.png" 
+                src={logoImg} 
                 alt="HealthMood Logo" 
                 style={{ height: '40px' }}
                 onError={(e) => {
