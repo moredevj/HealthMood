@@ -13,11 +13,11 @@ export default function Main() {
   const { products, loading: isLoading, error, isUsingFallback, isAuthenticated } = useProducts();
 
   // Get unique categories from products
-  const categories = ['all', ...new Set(products.map(p => p.category || 'sin-categoria').filter(Boolean))];
+  const categories = ['all', ...new Set(products.map(p => String(p.category || 'sin-categoria')).filter(Boolean))];
 
   // Filter and sort products
   const filteredAndSortedProducts = products
-    .filter(product => filterCategory === 'all' || (product.category || 'sin-categoria') === filterCategory)
+    .filter(product => filterCategory === 'all' || String(product.category || 'sin-categoria') === filterCategory)
     .sort((a, b) => {
       switch (sortBy) {
         case 'price-asc':
@@ -82,7 +82,7 @@ export default function Main() {
                 <option key={cat} value={cat}>
                   {cat === 'all' ? 'Todas las categorías' : 
                    cat === 'sin-categoria' ? 'Sin categoría' :
-                   cat.charAt(0).toUpperCase() + cat.slice(1)}
+                   String(cat).charAt(0).toUpperCase() + String(cat).slice(1)}
                 </option>
               ))}
             </select>

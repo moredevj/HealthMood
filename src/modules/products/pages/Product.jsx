@@ -75,11 +75,55 @@ export default function Product() {
               <div className="mb-4">
                 <label className="form-label">Cantidad:</label>
                 <div className="btn-group" role="group">
-                  <button className="btn btn-outline-primary" onClick={() => setQuantity(prev => Math.max(1, prev - 1))} disabled={quantity <= 1}>
+                  <button 
+                    className="btn text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                      border: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))} 
+                    disabled={quantity <= 1}
+                    onMouseEnter={(e) => {
+                      if (!e.target.disabled) {
+                        e.target.style.transform = 'translateY(-1px)';
+                        e.target.style.boxShadow = '0 4px 15px rgba(128, 97, 197, 0.3)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  >
                     <FaMinus />
                   </button>
-                  <button className="btn btn-outline-primary px-3" disabled>{quantity}</button>
-                  <button className="btn btn-outline-primary" onClick={() => setQuantity(prev => prev + 1)}>
+                  <button 
+                    className="btn text-white px-3" 
+                    style={{
+                      background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                      border: 'none'
+                    }}
+                    disabled
+                  >
+                    {quantity}
+                  </button>
+                  <button 
+                    className="btn text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                      border: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onClick={() => setQuantity(prev => prev + 1)}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = 'translateY(-1px)';
+                      e.target.style.boxShadow = '0 4px 15px rgba(128, 97, 197, 0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = 'translateY(0)';
+                      e.target.style.boxShadow = 'none';
+                    }}
+                  >
                     <IoMdAdd />
                   </button>
                 </div>
@@ -95,8 +139,22 @@ export default function Product() {
 
               <div className="d-grid">
                 <button
-                  className="btn btn-primary btn-lg"
+                  className="btn btn-lg text-white fw-medium"
+                  style={{
+                    background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                    border: 'none',
+                    transition: 'all 0.3s ease',
+                    borderRadius: '50px'
+                  }}
                   onClick={() => addToCart(product, quantity)}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 8px 25px rgba(128, 97, 197, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = 'none';
+                  }}
                 >
                   <i className="fas fa-shopping-cart me-2"></i>
                   Agregar {quantity} al carrito

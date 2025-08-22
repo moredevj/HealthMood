@@ -95,7 +95,6 @@ const UserProfile = () => {
   const handleViewDetails = (memberName) => {
     // Aquí puedes agregar la lógica para ver detalles
     // Por ejemplo, redirigir a otra página o abrir un modal
-    console.log(`Ver detalles de ${memberName}`);
     alert(`Viendo detalles de ${memberName}`);
   };
 

@@ -28,17 +28,12 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       // Intentar login con backend usando Axios
-      console.log('🔐 useAuth: Intentando login con backend...');
       const response = await apiService.login({ email, password });
-      console.log('📦 useAuth: Respuesta completa del backend:', response);
       
       // Verificar múltiples estructuras de respuesta
       const responseData = response.data || response;
       const token = responseData.token || responseData.accessToken || responseData.jwt || response.token;
       const user = responseData.user || responseData.customer || responseData;
-      
-      console.log('🔍 useAuth: Token extraído:', token ? 'PRESENTE' : 'AUSENTE');
-      console.log('🔍 useAuth: Usuario extraído:', user);
       
       if (token || user || response.status === 200) {
         // Construir userData con la información disponible
@@ -53,13 +48,11 @@ export function AuthProvider({ children }) {
         // Guardar token si existe
         if (token) {
           localStorage.setItem('authToken', token);
-          console.log('� useAuth: Token guardado en localStorage');
         }
         
         // Guardar usuario en sesión
         sessionStorage.setItem(AUTH_KEY, JSON.stringify(userData));
         setUser(userData);
-        console.log('✅ useAuth: Usuario autenticado exitosamente:', userData);
         
         // Disparar evento de autenticación
         setTimeout(() => {
@@ -71,11 +64,9 @@ export function AuthProvider({ children }) {
         
         return { ok: true, user: userData };
       } else {
-        console.warn('⚠️ useAuth: Respuesta del backend sin token ni usuario válidos');
         return { ok: false, message: 'Respuesta del servidor inválida.' };
       }
     } catch (error) {
-      console.error('❌ useAuth: Error en login:', error);
       
       // Si es error de autenticación específico (401, 403)
       if (error.response?.status === 401 || error.response?.status === 403) {
@@ -87,7 +78,6 @@ export function AuthProvider({ children }) {
       
       // Si es error de conexión, usar fallback local
       if (!error.response) {
-        console.log('🔄 useAuth: Error de conexión, usando autenticación local...');
         const db = readUsers();
         const found = db.find(u => u.email === email && u.password === password);
         if (found) {
@@ -115,7 +105,6 @@ export function AuthProvider({ children }) {
         return { ok: true, user: userData };
       }
     } catch (error) {
-      console.warn('Backend register failed:', error.message);
       
       // Fallback a registro local
       const db = readUsers();

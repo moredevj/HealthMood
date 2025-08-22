@@ -49,7 +49,14 @@ export default function ProductList({ categoriaInicial }) {
   const [limit, setLimit] = useState(6);
 
   // Obtener categorías únicas de los productos
-  const categories = ['', ...new Set(products.map(p => p.category).filter(Boolean))];
+  const categories = ['', ...new Set(products.map(p => {
+    // Si category es un objeto, extraer el nombre o usar una propiedad específica
+    if (typeof p.category === 'object' && p.category !== null) {
+      return p.category.name || p.category.categoryName || String(p.category) || 'Sin categoría';
+    }
+    // Si es string, usarlo directamente
+    return String(p.category || 'Sin categoría');
+  }).filter(Boolean))];
 
   // Inicializar categoría desde prop
   useEffect(() => {
@@ -64,13 +71,18 @@ export default function ProductList({ categoriaInicial }) {
     if (!cat) return '';
     
     try {
+      // Si category es un objeto, extraer el nombre
+      let categoryString = cat;
+      if (typeof cat === 'object' && cat !== null) {
+        categoryString = cat.name || cat.categoryName || String(cat);
+      }
+      
       // Decodificar URL encoding (%20, %2C, etc.)
-      const decodedCat = decodeURIComponent(cat.toString());
+      const decodedCat = decodeURIComponent(categoryString.toString());
       const lowerCat = decodedCat.toLowerCase().trim();
       return categoryMapping[lowerCat] || lowerCat;
     } catch (error) {
-      console.warn('Error normalizando categoría:', cat, error);
-      return cat.toLowerCase().trim();
+      return String(cat).toLowerCase().trim();
     }
   };
 
@@ -230,19 +242,20 @@ export default function ProductList({ categoriaInicial }) {
             <div className="row g-4">
               {paginatedProducts.map(product => (
                 <div key={product.id} className="col-lg-4 col-md-6">
-                  <div className="card border-0 shadow-sm h-100 position-relative product-card">
+                  <div className="card border-0 shadow-sm position-relative product-card" style={{ height: '480px' }}>
                     
                     {/* Badge de producto nuevo */}
-                    <div className="position-absolute top-0 end-0 m-2 z-index-1">
+                    <div className="position-absolute top-0 end-0 m-2" style={{ zIndex: 1 }}>
                       <span className="badge bg-success rounded-pill px-2 py-1">
                         Nuevo
                       </span>
                     </div>
 
-                    <Link to={`/products/${product.id}`} className="text-decoration-none">
-                      <div className="d-flex flex-column h-100">
-                        
-                        {/* Imagen del producto */}
+                    {/* Estructura con altura fija */}
+                    <div className="d-flex flex-column h-100">
+                      
+                      {/* Imagen del producto */}
+                      <Link to={`/products/${product.id}`} className="text-decoration-none">
                         <div className="position-relative overflow-hidden" style={{ height: '200px' }}>
                           <SafeImage 
                             src={product.image} 
@@ -251,29 +264,46 @@ export default function ProductList({ categoriaInicial }) {
                             style={{ transition: 'transform 0.3s ease' }}
                           />
                         </div>
+                      </Link>
 
-                        {/* Contenido de la tarjeta */}
-                        <div className="card-body d-flex flex-column flex-grow-1">
-                          
+                      {/* Contenido de la tarjeta */}
+                      <div className="card-body d-flex flex-column flex-grow-1" style={{ padding: '0.75rem' }}>
+                        
+                        <Link to={`/products/${product.id}`} className="text-decoration-none">
                           {/* Categoría */}
-                          <div className="mb-2">
+                          <div className="mb-1">
                             <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
                               {product.category}
                             </span>
                           </div>
 
                           {/* Nombre del producto */}
-                          <h5 className="card-title text-dark fw-bold mb-2" style={{ fontSize: '1.1rem' }}>
+                          <h5 className="card-title text-dark fw-bold mb-1" style={{ 
+                            fontSize: '1.1rem',
+                            height: '2.4rem',
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            lineHeight: '1.2'
+                          }}>
                             {product.name}
                           </h5>
 
                           {/* Descripción */}
-                          <p className="text-muted small mb-3 flex-grow-1">
+                          <p className="text-muted small mb-2" style={{
+                            height: '2.5rem',
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            lineHeight: '1.25'
+                          }}>
                             {product.description}
                           </p>
 
                           {/* Rating */}
-                          <div className="d-flex align-items-center mb-3">
+                          <div className="d-flex align-items-center mb-1" style={{ height: '1.5rem' }}>
                             <div className="text-warning me-2">
                               {[...Array(5)].map((_, i) => (
                                 <i key={i} className={i < Math.floor(product.rating) ? "fas fa-star" : "far fa-star"}></i>
@@ -283,7 +313,7 @@ export default function ProductList({ categoriaInicial }) {
                           </div>
 
                           {/* Precio */}
-                          <div className="d-flex justify-content-between align-items-center">
+                          <div className="d-flex justify-content-between align-items-center mb-2">
                             <div>
                               <h4 className="text-primary fw-bold mb-0">
                                 ${product.price.toLocaleString('es-CL')}
@@ -294,22 +324,35 @@ export default function ProductList({ categoriaInicial }) {
                               </small>
                             </div>
                           </div>
+                        </Link>
+                    
+                        {/* Botón agregar al carrito */}
+                        <div className="mt-auto">
+                          <button 
+                            className="btn w-100 rounded-pill fw-medium text-white"
+                            style={{
+                              background: 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                              border: 'none',
+                              transition: 'all 0.3s ease'
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              addToCart(product);
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = 'translateY(-2px)';
+                              e.target.style.boxShadow = '0 8px 25px rgba(128, 97, 197, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = 'translateY(0)';
+                              e.target.style.boxShadow = 'none';
+                            }}
+                          >
+                            <i className="fas fa-shopping-cart me-2"></i>
+                            Agregar al carrito
+                          </button>
                         </div>
                       </div>
-                    </Link>
-                    
-                    {/* Botón agregar al carrito */}
-                    <div className="card-footer bg-white border-0 pt-0">
-                      <button 
-                        className="btn btn-primary w-100 rounded-pill fw-medium"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          addToCart(product);
-                        }}
-                      >
-                        <i className="fas fa-shopping-cart me-2"></i>
-                        Agregar al carrito
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -327,6 +370,12 @@ export default function ProductList({ categoriaInicial }) {
                       className="page-link"
                       onClick={() => setPage(page - 1)}
                       disabled={page === 1}
+                      style={{
+                        background: page === 1 ? '#6c757d' : 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                        color: 'white',
+                        border: 'none',
+                        opacity: page === 1 ? 0.6 : 1
+                      }}
                     >
                       Anterior
                     </button>
@@ -337,6 +386,13 @@ export default function ProductList({ categoriaInicial }) {
                       <button
                         className="page-link"
                         onClick={() => setPage(i + 1)}
+                        style={{
+                          background: i + 1 === page 
+                            ? 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)' 
+                            : 'white',
+                          color: i + 1 === page ? 'white' : '#8061c5',
+                          border: i + 1 === page ? 'none' : '1px solid #8061c5'
+                        }}
                       >
                         {i + 1}
                       </button>
@@ -348,6 +404,12 @@ export default function ProductList({ categoriaInicial }) {
                       className="page-link"
                       onClick={() => setPage(page + 1)}
                       disabled={page === totalPages}
+                      style={{
+                        background: page === totalPages ? '#6c757d' : 'linear-gradient(135deg, #8061c5 0%, #5706ad 100%)',
+                        color: 'white',
+                        border: 'none',
+                        opacity: page === totalPages ? 0.6 : 1
+                      }}
                     >
                       Siguiente
                     </button>

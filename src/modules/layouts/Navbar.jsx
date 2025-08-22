@@ -335,16 +335,24 @@ export default function Navbar() {
                   <NavLink
                     to="/about"
                     data-bs-dismiss="offcanvas"
-                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                    className={({ isActive }) =>
+                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
+                        isActive ? 'active bg-white bg-opacity-25' : ''
+                      }`
+                    }
                   >
                     QUIENES SOMOS
                   </NavLink>
                 </li>
                 <li className="nav-item mb-2">
                   <NavLink
-                    to="/catalog"
+                    to="/products"
                     data-bs-dismiss="offcanvas"
-                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                    className={({ isActive }) =>
+                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
+                        isActive ? 'active bg-white bg-opacity-25' : ''
+                      }`
+                    }
                   >
                     CATÁLOGO
                   </NavLink>
@@ -353,7 +361,11 @@ export default function Navbar() {
                   <NavLink
                     to="/blog"
                     data-bs-dismiss="offcanvas"
-                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                    className={({ isActive }) =>
+                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
+                        isActive ? 'active bg-white bg-opacity-25' : ''
+                      }`
+                    }
                   >
                     BLOG
                   </NavLink>
@@ -362,7 +374,11 @@ export default function Navbar() {
                   <NavLink
                     to="/contact"
                     data-bs-dismiss="offcanvas"
-                    className="nav-link text-white p-3 rounded-3 mobile-nav-link"
+                    className={({ isActive }) =>
+                      `nav-link text-white p-3 rounded-3 mobile-nav-link ${
+                        isActive ? 'active bg-white bg-opacity-25' : ''
+                      }`
+                    }
                   >
                     CONTACTO
                   </NavLink>
@@ -392,9 +408,19 @@ export default function Navbar() {
 
               {/* Cart in mobile */}
               <div className="p-3">
-                <div className="d-flex align-items-center justify-content-between text-white mb-3">
-                  <CartIcon />
-                </div>
+                <NavLink
+                  to="/cart"
+                  data-bs-dismiss="offcanvas"
+                  className="btn btn-outline-light rounded-pill w-100 py-3 d-flex align-items-center justify-content-center"
+                >
+                  <FaShoppingCart className="me-2" />
+                  Mi Carrito
+                  {cartCount > 0 && (
+                    <span className="badge bg-warning text-dark ms-2 rounded-pill">
+                      {cartCount}
+                    </span>
+                  )}
+                </NavLink>
               </div>
 
               {/* Authentication actions */}

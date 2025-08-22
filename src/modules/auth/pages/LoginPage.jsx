@@ -12,9 +12,7 @@ export default function LoginPage() {
 
   const handleLogin = async ({ email, password }) => {
     try {
-      console.log('🔐 LoginPage: Iniciando proceso de login...');
       const result = await login(email, password);
-      console.log('📥 LoginPage: Resultado del login:', result);
       
       if (result.ok) {
         setAlert({ show: true, msg: '¡Ingreso con éxito! 🎉', variant: 'success' });
@@ -27,7 +25,6 @@ export default function LoginPage() {
         });
       }
     } catch (error) {
-      console.error('❌ LoginPage: Error en handleLogin:', error);
       setAlert({ 
         show: true, 
         msg: 'Error al procesar el login. Inténtalo nuevamente.', 

@@ -33,8 +33,6 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.error('API Error:', error);
-    
     // Si es error 401, limpiar token
     if (error.response?.status === 401) {
       localStorage.removeItem('authToken');
@@ -61,23 +59,15 @@ export const apiService = {
   // Autenticación
   login: async (credentials) => {
     try {
-      console.log('📡 API: Enviando petición de login a:', '/auth/login');
-      console.log('📦 API: Datos enviados:', { email: credentials.email, password: '***' });
-      
       const response = await api.post('/auth/login', credentials);
-      console.log('📥 API: Respuesta completa recibida:', response);
       
       // Extraer datos de la respuesta
       const responseData = response.data || response;
       const token = responseData.token || responseData.accessToken || responseData.jwt || response.token;
       const user = responseData.user || responseData.customer || responseData;
       
-      console.log('🔍 API: Token extraído:', token ? 'PRESENTE' : 'AUSENTE');
-      console.log('🔍 API: Usuario extraído:', user);
-      
       if (token) {
         localStorage.setItem('authToken', token);
-        console.log('💾 API: Token guardado en localStorage');
       }
       
       return { 
@@ -87,9 +77,6 @@ export const apiService = {
         ...response 
       };
     } catch (error) {
-      console.error('❌ API: Error en login:', error);
-      console.log('📍 API: Status:', error.response?.status);
-      console.log('📍 API: Datos del error:', error.response?.data);
       throw error;
     }
   },
