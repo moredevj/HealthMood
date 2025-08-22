@@ -90,8 +90,8 @@ export default function Navbar() {
           {/* Enhanced Brand */}
           <Link className="navbar-brand" to="/">
             <img 
-              src="/src/assets/logo.png" 
-              alt="Tiendita Logo" 
+              src="/logo.png" 
+              alt="HealthMood Logo" 
               style={{ height: '60px' }}
             />
           </Link>

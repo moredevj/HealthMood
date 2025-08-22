@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="col-12 col-md-3">
             <div className="mb-4">
               <img 
-                src="/src/assets/logo.png" 
+                src="/logo.png" 
                 alt="Logo Tiendita" 
                 style={{ height: '40px' }} // Puedes ajustar este valor
               />
