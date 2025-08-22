@@ -10,9 +10,14 @@ export default function Footer() {
             <div className="mb-4">
               <img 
                 src="/logo.png" 
-                alt="Logo Tiendita" 
-                style={{ height: '40px' }} // Puedes ajustar este valor
+                alt="HealthMood Logo" 
+                style={{ height: '40px' }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextElementSibling.style.display = 'block';
+                }}
               />
+              <span className="fw-bold text-white" style={{ display: 'none', fontSize: '24px' }}>HealthMood</span>
             </div>
             <p className="mb-4">Dedicados al bienestar integral de tu amigo peludo con productos de calidad premium y atención personalizada.</p>
             <div className="d-flex gap-4">

@@ -10,5 +10,7 @@ export default defineConfig({
   },
   preview: {
     port: 5174
-  }
+  },
+  publicDir: 'public',
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg']
 })
