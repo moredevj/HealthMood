@@ -10,22 +10,18 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const [alert, setAlert] = useState({ show: false, msg: '', variant: 'success' });
 
-  const handleSubmit = ({ username, password, confirm }) => {
-    if (password.length < 4) {
-      setAlert({ show: true, msg: 'La contraseña debe tener al menos 4 caracteres.', variant: 'danger' });
-      return;
-    }
-    if (password !== confirm) {
-      setAlert({ show: true, msg: 'Las contraseñas no coinciden.', variant: 'danger' });
-      return;
-    }
-
-    const { ok, message } = register(username.trim(), password);
-    if (ok) {
-      setAlert({ show: true, msg: '¡Cuenta creada exitosamente! 🎉', variant: 'success' });
-      setTimeout(() => navigate('/'), 2000);
-    } else {
-      setAlert({ show: true, msg: message || 'No se pudo crear la cuenta', variant: 'danger' });
+  const handleSubmit = async (userData) => {
+    try {
+      const { ok, message } = await register(userData);
+      if (ok) {
+        setAlert({ show: true, msg: message || '¡Cuenta creada exitosamente! 🎉', variant: 'success' });
+        setTimeout(() => navigate('/login'), 2000);
+      } else {
+        setAlert({ show: true, msg: message || 'No se pudo crear la cuenta', variant: 'danger' });
+      }
+    } catch (error) {
+      console.error('Error en registro:', error);
+      setAlert({ show: true, msg: 'Error al registrar usuario. Por favor intente nuevamente.', variant: 'danger' });
     }
   };
 

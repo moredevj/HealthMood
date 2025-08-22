@@ -82,11 +82,31 @@ export const apiService = {
   },
   
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
-    if (response.token) {
-      localStorage.setItem('authToken', response.token);
+    try {
+      const response = await api.post('/auth/register', userData);
+      if (response.token) {
+        localStorage.setItem('authToken', response.token);
+      }
+      return response;
+    } catch (error) {
+      // Si es error 409, puede ser que el usuario ya existe pero se procesó correctamente
+      if (error.response?.status === 409) {
+        const responseData = error.response.data;
+        
+        // Verificar si hay datos de usuario en la respuesta a pesar del error
+        if (responseData && (
+          responseData.user || 
+          responseData.customerId || 
+          responseData.id || 
+          responseData.message === 'Cliente registrado exitosamente' ||
+          responseData.message === 'Usuario registrado exitosamente' ||
+          responseData.success === true
+        )) {
+          return responseData;
+        }
+      }
+      throw error;
     }
-    return response;
   },
   
   logout: () => {

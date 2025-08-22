@@ -94,31 +94,64 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const register = async (email, password) => {
+  const register = async (userData) => {
     try {
       // Intentar registro con backend usando Axios
-      const response = await apiService.register({ email, password });
-      if (response && (response.user || response.token)) {
-        const userData = response.user || { email, token: response.token };
-        sessionStorage.setItem(AUTH_KEY, JSON.stringify(userData));
-        setUser(userData);
-        return { ok: true, user: userData };
+      const response = await apiService.register(userData);
+      if (response && (response.user || response.token || response.customerId || response.id)) {
+        const userInfo = response.user || { 
+          ...userData, 
+          token: response.token, 
+          id: response.customerId || response.id,
+          customerId: response.customerId,
+          email: response.email || userData.email,
+          role: response.role
+        };
+        sessionStorage.setItem(AUTH_KEY, JSON.stringify(userInfo));
+        setUser(userInfo);
+        return { ok: true, user: userInfo, message: response.message || 'Usuario registrado exitosamente' };
       }
+      // Si la respuesta no tiene user/token pero tiene mensaje de éxito
+      if (response && response.message && response.message.includes('exitosamente')) {
+        return { ok: true, message: response.message };
+      }
+      return { ok: true, message: 'Usuario registrado exitosamente' };
     } catch (error) {
+      // Verificar si es un error 409 con mensaje de éxito
+      if (error.response?.status === 409) {
+        const errorData = error.response.data;
+        // Si el mensaje indica éxito a pesar del error 409
+        if (errorData && (
+          errorData.message?.includes('exitoso') || 
+          errorData.message?.includes('registrado') ||
+          errorData.success === true
+        )) {
+          return { ok: true, message: errorData.message || 'Usuario registrado exitosamente' };
+        }
+        // Si es conflicto por usuario existente
+        if (errorData?.message?.includes('existe') || errorData?.message?.includes('duplicado')) {
+          return { ok: false, message: 'El usuario ya existe.' };
+        }
+      }
       
       // Fallback a registro local
       const db = readUsers();
-      const exists = db.some(u => u.email.toLowerCase() === email.toLowerCase());
+      const exists = db.some(u => u.email.toLowerCase() === userData.email.toLowerCase());
       if (exists) return { ok: false, message: 'El usuario ya existe.' };
 
-      const newUser = { id: Date.now(), email, password };
+      const newUser = { 
+        id: Date.now(), 
+        email: userData.email, 
+        password: userData.password,
+        firstName: userData.firstName,
+        lastName: userData.lastName
+      };
       const updated = [...db, newUser];
       localStorage.setItem(USERS_KEY, JSON.stringify(updated));
       sessionStorage.setItem(AUTH_KEY, JSON.stringify(newUser));
       setUser(newUser);
       return { ok: true, user: newUser };
     }
-    return { ok: false, message: 'Error al registrar usuario.' };
   };
 
   const logout = () => {

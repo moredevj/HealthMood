@@ -27,17 +27,28 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.closest('.dropdown')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
+    document.addEventListener('click', handleClickOutside);
     initializeNavHoverEffect();
     
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -50,6 +61,14 @@ export default function Navbar() {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -191,7 +210,8 @@ export default function Navbar() {
                       className="user-dropdown d-flex align-items-center gap-2 dropdown-toggle"
                       id="userMenu"
                       data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                      aria-expanded={isDropdownOpen}
+                      onClick={toggleDropdown}
                     >
                       <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center">
                         <FaUser className="text-white" style={{ fontSize: '12px' }} />
@@ -204,7 +224,7 @@ export default function Navbar() {
                       </div>
                       <FaChevronDown className="text-white" style={{ fontSize: '10px' }} />
                     </button>
-                    <ul className="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2">
+                    <ul className={`dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2 ${isDropdownOpen ? 'show' : ''}`}>
                       <li>
                         <h6 className="dropdown-header d-flex align-items-center">
                           Mi Cuenta
@@ -212,17 +232,17 @@ export default function Navbar() {
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/profile">
+                        <Link className="dropdown-item rounded-2 p-2" to="/profile" onClick={closeDropdown}>
                           Mi Perfil
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/orders">
+                        <Link className="dropdown-item rounded-2 p-2" to="/orders" onClick={closeDropdown}>
                           Mis Envíos
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/settings">
+                        <Link className="dropdown-item rounded-2 p-2" to="/settings" onClick={closeDropdown}>
                           <FaCog className="me-2 text-muted" />
                           Configuración
                         </Link>
@@ -231,7 +251,10 @@ export default function Navbar() {
                       <li>
                         <button 
                           className="dropdown-item rounded-2 p-2 text-danger" 
-                          onClick={handleLogout}
+                          onClick={(e) => {
+                            handleLogout(e);
+                            closeDropdown();
+                          }}
                         >
                           <FaSignOutAlt className="me-2" />
                           Cerrar Sesión

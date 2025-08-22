@@ -285,6 +285,9 @@ a.auth-button:active {
 /* User Menu Dropdown Animation */
 .dropdown-menu {
   animation: fadeIn 0.2s ease-in-out;
+}
+
+.dropdown-menu.show {
   display: flex;
   align-items: center;
 }
