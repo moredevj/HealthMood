@@ -13,11 +13,25 @@ export default function Main() {
   const { products, loading: isLoading, error, isUsingFallback, isAuthenticated } = useProducts();
 
   // Get unique categories from products
-  const categories = ['all', ...new Set(products.map(p => p.category || 'sin-categoria').filter(Boolean))];
+  const categories = ['all', ...new Set(products.map(p => {
+    // Asegurar que p.category sea siempre un string
+    return typeof p.category === 'object' && p.category !== null 
+      ? p.category.name || 'sin-categoria'
+      : p.category || 'sin-categoria';
+  }).filter(Boolean))];
 
   // Filter and sort products
   const filteredAndSortedProducts = products
-    .filter(product => filterCategory === 'all' || (product.category || 'sin-categoria') === filterCategory)
+    .filter(product => {
+      if (filterCategory === 'all') return true;
+
+      // Extraer el nombre de la categoría independientemente de si es objeto o string
+      const productCategory = typeof product.category === 'object' && product.category !== null
+        ? product.category.name || 'sin-categoria'
+        : product.category || 'sin-categoria';
+
+      return productCategory === filterCategory;
+    })
     .sort((a, b) => {
       switch (sortBy) {
         case 'price-asc':
@@ -82,7 +96,7 @@ export default function Main() {
                 <option key={cat} value={cat}>
                   {cat === 'all' ? 'Todas las categorías' : 
                    cat === 'sin-categoria' ? 'Sin categoría' :
-                   cat.charAt(0).toUpperCase() + cat.slice(1)}
+                   (typeof cat === 'string' ? cat.charAt(0).toUpperCase() + cat.slice(1) : cat)}
                 </option>
               ))}
             </select>
@@ -108,6 +122,7 @@ export default function Main() {
                     src={product.image} 
                     className="card-img-top" 
                     alt={product.name}
+                    productId={product.id} 
                     style={{ 
                       height: '200px', 
                       objectFit: 'cover'

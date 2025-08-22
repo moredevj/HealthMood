@@ -3,8 +3,11 @@ import { useState, useEffect } from 'react';
 import apiService from '../services/api';
 import { MOCK } from '../modules/home/utils/dummyData';
 
-// Imagen por defecto local (SVG en base64)
-const DEFAULT_PRODUCT_IMAGE = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNDAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfpbY8L3RleHQ+CiAgPHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UHJvZHVjdG88L3RleHQ+Cjwvc3ZnPgo=";
+// Importar imagen por defecto desde constante compartida
+import { DEFAULT_IMAGE } from '../components/SafeImage';
+
+// Alias para mantener compatibilidad con código existente
+const DEFAULT_PRODUCT_IMAGE = DEFAULT_IMAGE;
 
 export const useProducts = () => {
   const [products, setProducts] = useState([]);
@@ -39,10 +42,23 @@ export const useProducts = () => {
             name: product.name || 'Producto sin nombre',
             description: product.description || 'Sin descripción',
             price: product.price || 0,
-            // IMPORTANTE: Manejar category como string, no como array
-            category: product.category || 'Sin categoría',
-            // Mapear images/imageUrl a image
-            image: product.images || product.imageUrl || product.image || DEFAULT_PRODUCT_IMAGE,
+            // Asegurar que la categoría siempre sea un string para evitar errores de renderización
+            category: typeof product.category === 'object' && product.category !== null 
+              ? product.category.name || 'Sin categoría'
+              : product.category || 'Sin categoría',
+            // Priorizar imageUrl que viene de la tabla 'img'
+            image: product.imageUrl || (() => {
+              // Si es un array, tomar el primer elemento
+              if (Array.isArray(product.images) && product.images.length > 0) {
+                return product.images[0];
+              }
+              // Si tenemos un objeto con url
+              if (product.images && typeof product.images === 'object' && product.images.url) {
+                return product.images.url;
+              }
+              // Otras opciones como fallback
+              return product.images || product.image || null;
+            })(),
             // Campos adicionales
             rating: product.rating || 4.5,
             stock: product.stock !== undefined ? product.stock : 10,
@@ -88,7 +104,19 @@ export const useProducts = () => {
           description: product.description || 'Sin descripción',
           price: product.price || 0,
           category: product.category || 'Sin categoría',
-          image: product.images || product.imageUrl || product.image || DEFAULT_PRODUCT_IMAGE,
+          // Priorizar imageUrl que viene de la tabla 'img'
+          image: product.imageUrl || (() => {
+            // Si es un array, tomar el primer elemento
+            if (Array.isArray(product.images) && product.images.length > 0) {
+              return product.images[0];
+            }
+            // Si tenemos un objeto con url
+            if (product.images && typeof product.images === 'object' && product.images.url) {
+              return product.images.url;
+            }
+            // Otras opciones como fallback
+            return product.images || product.image || null;
+          })(),
           rating: product.rating || 4.5,
           stock: product.stock !== undefined ? product.stock : 10,
           active: product.active !== undefined ? product.active : true

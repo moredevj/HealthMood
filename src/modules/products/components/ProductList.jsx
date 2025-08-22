@@ -48,8 +48,13 @@ export default function ProductList({ categoriaInicial }) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
 
-  // Obtener categorías únicas de los productos
-  const categories = ['', ...new Set(products.map(p => p.category).filter(Boolean))];
+  // Obtener categorías únicas de los productos, asegurando que son strings
+  const categories = ['', ...new Set(products.map(p => {
+    if (typeof p.category === 'object' && p.category !== null) {
+      return p.category.name || 'sin-categoria';
+    }
+    return p.category || 'sin-categoria';
+  }).filter(Boolean))];
 
   // Inicializar categoría desde prop
   useEffect(() => {
@@ -64,13 +69,18 @@ export default function ProductList({ categoriaInicial }) {
     if (!cat) return '';
     
     try {
+      // Extraer el nombre si es un objeto
+      if (typeof cat === 'object' && cat !== null) {
+        cat = cat.name || '';
+      }
+
       // Decodificar URL encoding (%20, %2C, etc.)
       const decodedCat = decodeURIComponent(cat.toString());
       const lowerCat = decodedCat.toLowerCase().trim();
       return categoryMapping[lowerCat] || lowerCat;
     } catch (error) {
       console.warn('Error normalizando categoría:', cat, error);
-      return cat.toLowerCase().trim();
+      return typeof cat === 'string' ? cat.toLowerCase().trim() : '';
     }
   };
 
@@ -247,6 +257,7 @@ export default function ProductList({ categoriaInicial }) {
                           <SafeImage 
                             src={product.image} 
                             alt={product.name}
+                            productId={product.id}
                             className="w-100 h-100 object-fit-cover"
                             style={{ transition: 'transform 0.3s ease' }}
                           />
@@ -258,7 +269,9 @@ export default function ProductList({ categoriaInicial }) {
                           {/* Categoría */}
                           <div className="mb-2">
                             <span className="badge bg-light text-primary rounded-pill px-2 py-1 small">
-                              {product.category}
+                              {typeof product.category === 'object' && product.category !== null
+                                ? product.category.name || 'Sin categoría'
+                                : product.category || 'Sin categoría'}
                             </span>
                           </div>
 
@@ -275,18 +288,22 @@ export default function ProductList({ categoriaInicial }) {
                           {/* Rating */}
                           <div className="d-flex align-items-center mb-3">
                             <div className="text-warning me-2">
-                              {[...Array(5)].map((_, i) => (
-                                <i key={i} className={i < Math.floor(product.rating) ? "fas fa-star" : "far fa-star"}></i>
-                              ))}
+                              {[...Array(5)].map((_, i) => {
+                                // Asegurar que rating es un número
+                                const rating = typeof product.rating === 'number' ? product.rating : 0;
+                                return (
+                                  <i key={i} className={i < Math.floor(rating) ? "fas fa-star" : "far fa-star"}></i>
+                                );
+                              })}
                             </div>
-                            <span className="small text-muted">({product.rating})</span>
+                            <span className="small text-muted">({typeof product.rating === 'number' ? product.rating : 0})</span>
                           </div>
 
                           {/* Precio */}
                           <div className="d-flex justify-content-between align-items-center">
                             <div>
                               <h4 className="text-primary fw-bold mb-0">
-                                ${product.price.toLocaleString('es-CL')}
+                                ${typeof product.price === 'number' ? product.price.toLocaleString('es-CL') : '0'}
                               </h4>
                               <small className="text-success">
                                 <i className="fas fa-truck me-1"></i>
