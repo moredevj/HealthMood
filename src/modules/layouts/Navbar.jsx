@@ -1,4 +1,3 @@
-
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/hook/useAuth';
 import CartIcon from '../cart/components/CartIcon';
@@ -28,28 +27,29 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    const handleClickOutside = (event) => {
-      if (isDropdownOpen && !event.target.closest('.dropdown')) {
-        setIsDropdownOpen(false);
-      }
-    };
-
     window.addEventListener('scroll', handleScroll);
-    document.addEventListener('click', handleClickOutside);
     initializeNavHoverEffect();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('click', handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, []);
+
+  const handleMobileNavClick = () => {
+    const offcanvasElement = document.getElementById('offcanvasNav');
+    if (offcanvasElement) {
+      const offcanvas = window.bootstrap?.Offcanvas?.getInstance(offcanvasElement);
+      if (offcanvas) {
+        offcanvas.hide();
+      }
+    }
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -64,13 +64,7 @@ export default function Navbar() {
     }
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
-  const closeDropdown = () => {
-    setIsDropdownOpen(false);
-  };
 
   return (
     <>
@@ -225,8 +219,8 @@ export default function Navbar() {
                       className="user-dropdown d-flex align-items-center gap-2 dropdown-toggle"
                       id="userMenu"
                       data-bs-toggle="dropdown"
-                      aria-expanded={isDropdownOpen}
-                      onClick={toggleDropdown}
+                      aria-expanded="false"
+                      type="button"
                     >
                       <div className="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center">
                         <FaUser className="text-white" style={{ fontSize: '12px' }} />
@@ -239,7 +233,7 @@ export default function Navbar() {
                       </div>
                       <FaChevronDown className="text-white" style={{ fontSize: '10px' }} />
                     </button>
-                    <ul className={`dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2 ${isDropdownOpen ? 'show' : ''}`}>
+                    <ul className="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-2 mt-2">
                       <li>
                         <h6 className="dropdown-header d-flex align-items-center">
                           Mi Cuenta
@@ -247,17 +241,17 @@ export default function Navbar() {
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/profile" onClick={closeDropdown}>
+                        <Link className="dropdown-item rounded-2 p-2" to="/profile">
                           Mi Perfil
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/orders" onClick={closeDropdown}>
+                        <Link className="dropdown-item rounded-2 p-2" to="/orders">
                           Mis Envíos
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item rounded-2 p-2" to="/settings" onClick={closeDropdown}>
+                        <Link className="dropdown-item rounded-2 p-2" to="/settings">
                           <FaCog className="me-2 text-muted" />
                           Configuración
                         </Link>
@@ -266,10 +260,7 @@ export default function Navbar() {
                       <li>
                         <button 
                           className="dropdown-item rounded-2 p-2 text-danger" 
-                          onClick={(e) => {
-                            handleLogout(e);
-                            closeDropdown();
-                          }}
+                          onClick={handleLogout}
                         >
                           <FaSignOutAlt className="me-2" />
                           Cerrar Sesión
@@ -359,7 +350,7 @@ export default function Navbar() {
                   <NavLink
                     end
                     to="/"
-                    data-bs-dismiss="offcanvas"
+                    onClick={handleMobileNavClick}
                     className={({ isActive }) =>
                       `nav-link text-white p-3 rounded-3 mobile-nav-link ${
                         isActive ? 'active bg-white bg-opacity-25' : ''
@@ -372,7 +363,7 @@ export default function Navbar() {
                 <li className="nav-item mb-2">
                   <NavLink
                     to="/about"
-                    data-bs-dismiss="offcanvas"
+                    onClick={handleMobileNavClick}
                     className={({ isActive }) =>
                       `nav-link text-white p-3 rounded-3 mobile-nav-link ${
                         isActive ? 'active bg-white bg-opacity-25' : ''
@@ -385,7 +376,7 @@ export default function Navbar() {
                 <li className="nav-item mb-2">
                   <NavLink
                     to="/products"
-                    data-bs-dismiss="offcanvas"
+                    onClick={handleMobileNavClick}
                     className={({ isActive }) =>
                       `nav-link text-white p-3 rounded-3 mobile-nav-link ${
                         isActive ? 'active bg-white bg-opacity-25' : ''
@@ -398,7 +389,7 @@ export default function Navbar() {
                 <li className="nav-item mb-2">
                   <NavLink
                     to="/blog"
-                    data-bs-dismiss="offcanvas"
+                    onClick={handleMobileNavClick}
                     className={({ isActive }) =>
                       `nav-link text-white p-3 rounded-3 mobile-nav-link ${
                         isActive ? 'active bg-white bg-opacity-25' : ''
@@ -411,7 +402,7 @@ export default function Navbar() {
                 <li className="nav-item mb-2">
                   <NavLink
                     to="/contact"
-                    data-bs-dismiss="offcanvas"
+                    onClick={handleMobileNavClick}
                     className={({ isActive }) =>
                       `nav-link text-white p-3 rounded-3 mobile-nav-link ${
                         isActive ? 'active bg-white bg-opacity-25' : ''
@@ -448,7 +439,7 @@ export default function Navbar() {
               <div className="p-3">
                 <NavLink
                   to="/cart"
-                  data-bs-dismiss="offcanvas"
+                  onClick={handleMobileNavClick}
                   className="btn btn-outline-light rounded-pill w-100 py-3 d-flex align-items-center justify-content-center"
                 >
                   <FaShoppingCart className="me-2" />
@@ -467,7 +458,7 @@ export default function Navbar() {
                   <div className="d-grid gap-2">
                     <NavLink
                       to="/login"
-                      data-bs-dismiss="offcanvas"
+                      onClick={handleMobileNavClick}
                       className="btn btn-light rounded-pill py-3"
                     >
                       <FaSignInAlt className="me-2" />
@@ -475,7 +466,7 @@ export default function Navbar() {
                     </NavLink>
                     <NavLink
                       to="/register"
-                      data-bs-dismiss="offcanvas"
+                      onClick={handleMobileNavClick}
                       className="btn btn-warning rounded-pill py-3"
                     >
                       Crear Cuenta
@@ -485,22 +476,24 @@ export default function Navbar() {
                   <div className="d-grid gap-2">
                     <Link
                       to="/profile"
-                      data-bs-dismiss="offcanvas"
+                      onClick={handleMobileNavClick}
                       className="btn btn-light rounded-pill py-3"
                     >
                       Mi Perfil
                     </Link>
                     <Link
                       to="/orders"
-                      data-bs-dismiss="offcanvas"
+                      onClick={handleMobileNavClick}
                       className="btn btn-outline-light rounded-pill py-3"
                     >
                       Mis Pedidos
                     </Link>
                     <button
                       className="btn btn-outline-light rounded-pill py-3 text-start"
-                      onClick={handleLogout}
-                      data-bs-dismiss="offcanvas"
+                      onClick={(e) => {
+                        handleLogout(e);
+                        handleMobileNavClick();
+                      }}
                     >
                       <FaSignOutAlt className="me-2" />
                       Cerrar Sesión
